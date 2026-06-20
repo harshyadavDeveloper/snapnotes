@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snapnotes/features/notes/screens/notes_screen.dart';
 import 'package:snapnotes/providers/collection_provider.dart';
 
 import '../../../widgets/app_error_view.dart';
@@ -64,6 +65,17 @@ class _CollectionsScreenState extends State<CollectionsScreen> {
         final collection = provider.collections[index];
 
         return ListTile(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => NotesScreen(
+                  collectionId: collection.id,
+                  collectionName: collection.name,
+                ),
+              ),
+            );
+          },
           leading: const Icon(Icons.folder),
 
           title: Text(collection.name),
