@@ -25,6 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final dashboardProvider = context.watch<DashboardNotifier>();
+    debugPrint('Recent Notes Count: ${dashboardProvider.recentNotes.length}');
     return Scaffold(
       appBar: AppBar(title: const Text('SnapNotes')),
       body: SafeArea(
@@ -123,13 +125,42 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   const SizedBox(height: 32),
 
-                  /// Recent Notes Header
                   AppSectionHeader(title: 'Recent Notes', onViewAll: () {}),
 
                   const SizedBox(height: 16),
 
-                  /// Empty State
-                  const AppEmptyState(),
+                  if (dashboardProvider.recentNotes.isEmpty)
+                    const AppEmptyState()
+                  else
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: dashboardProvider.recentNotes.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        final note = dashboardProvider.recentNotes[index];
+
+                        return Card(
+                          child: ListTile(
+                            leading: const Icon(Icons.note_alt_outlined),
+
+                            title: Text(
+                              note.title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+
+                            subtitle: Text(
+                              note.content,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+
+                            trailing: const Icon(Icons.chevron_right),
+                          ),
+                        );
+                      },
+                    ),
 
                   const SizedBox(height: 24),
                 ],

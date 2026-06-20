@@ -1,4 +1,5 @@
 import 'package:snapnotes/core/state/base_notifier.dart';
+import 'package:snapnotes/providers/dashboard_notifier.dart';
 
 import '../data/models/collection_model.dart';
 import '../domain/usecases/collections/create_collection_usecase.dart';
@@ -9,11 +10,13 @@ class CollectionNotifier extends BaseNotifier {
   final GetCollectionsUseCase _getCollectionsUseCase;
   final CreateCollectionUseCase _createCollectionUseCase;
   final DeleteCollectionUseCase _deleteCollectionUseCase;
+  final DashboardNotifier _dashboardNotifier;
 
   CollectionNotifier(
     this._getCollectionsUseCase,
     this._createCollectionUseCase,
     this._deleteCollectionUseCase,
+    this._dashboardNotifier,
   );
 
   List<CollectionModel> collections = [];
@@ -29,6 +32,7 @@ class CollectionNotifier extends BaseNotifier {
   Future<void> createCollection(String name) async {
     await execute(() async {
       await _createCollectionUseCase(name);
+      await _dashboardNotifier.loadDashboard();
 
       await loadCollections();
     });
@@ -37,6 +41,7 @@ class CollectionNotifier extends BaseNotifier {
   Future<void> deleteCollection(int id) async {
     await execute(() async {
       await _deleteCollectionUseCase(id);
+      await _dashboardNotifier.loadDashboard();
 
       await loadCollections();
     });

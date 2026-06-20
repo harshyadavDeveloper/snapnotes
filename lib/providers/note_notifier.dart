@@ -1,4 +1,5 @@
 import 'package:snapnotes/core/state/base_notifier.dart';
+import 'package:snapnotes/providers/dashboard_notifier.dart';
 
 import '../data/models/note_model.dart';
 import '../domain/usecases/notes/create_note_usecase.dart';
@@ -11,12 +12,14 @@ class NoteNotifier extends BaseNotifier {
   final GetNotesByCollectionUseCase _getNotesByCollectionUseCase;
   final CreateNoteUseCase _createNoteUseCase;
   final DeleteNoteUseCase _deleteNoteUseCase;
+  final DashboardNotifier _dashboardNotifier;
 
   NoteNotifier(
     this._getNotesUseCase,
     this._getNotesByCollectionUseCase,
     this._createNoteUseCase,
     this._deleteNoteUseCase,
+    this._dashboardNotifier,
   );
 
   List<NoteModel> notes = [];
@@ -54,6 +57,7 @@ class NoteNotifier extends BaseNotifier {
         collectionId: collectionId,
         tags: tags,
       );
+      await _dashboardNotifier.loadDashboard();
 
       if (selectedCollectionId != null) {
         await loadNotesByCollection(selectedCollectionId!);
@@ -66,6 +70,7 @@ class NoteNotifier extends BaseNotifier {
   Future<void> deleteNote(int id) async {
     await execute(() async {
       await _deleteNoteUseCase(id);
+      await _dashboardNotifier.loadDashboard();
 
       if (selectedCollectionId != null) {
         await loadNotesByCollection(selectedCollectionId!);

@@ -27,20 +27,33 @@ class SnapNotesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dashboardNotifier = DashboardNotifier(getIt(), getIt(), getIt());
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
+
+        ChangeNotifierProvider(create: (_) => dashboardNotifier),
+
         ChangeNotifierProvider(
-          create: (_) => CollectionNotifier(getIt(), getIt(), getIt()),
+          create: (_) =>
+              CollectionNotifier(getIt(), getIt(), getIt(), dashboardNotifier),
         ),
+
         ChangeNotifierProvider(
-          create: (_) => NoteNotifier(getIt(), getIt(), getIt(), getIt()),
+          create: (_) => NoteNotifier(
+            getIt(),
+            getIt(),
+            getIt(),
+            getIt(),
+            dashboardNotifier,
+          ),
         ),
-        ChangeNotifierProvider(
-          create: (_) => DashboardNotifier(getIt(), getIt()),
-        ),
+
         ChangeNotifierProvider(create: (_) => ScanNotifier()),
+
         ChangeNotifierProvider(create: (_) => OcrNotifier()),
       ],
       child: const _AppView(),
