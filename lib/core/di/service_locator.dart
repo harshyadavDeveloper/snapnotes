@@ -9,6 +9,7 @@ import 'package:snapnotes/domain/usecases/notes/create_note_usecase.dart';
 import 'package:snapnotes/domain/usecases/notes/delete_note_usecase.dart';
 import 'package:snapnotes/domain/usecases/notes/get_notes_by_collection_usecase.dart';
 import 'package:snapnotes/domain/usecases/notes/get_notes_usecase.dart';
+import 'package:snapnotes/domain/usecases/search/search_notes_usecase.dart';
 
 import '../../data/datasources/local/collection_local_datasource.dart';
 import '../../data/repositories/collection_repository_impl.dart';
@@ -54,4 +55,6 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton(() => GetTotalCollectionsUseCase(getIt()));
 
   getIt.registerLazySingleton(() => GetRecentNotesUseCase(getIt()));
+
+  getIt.registerLazySingleton(() => SearchNotesUseCase(getIt()));
 }

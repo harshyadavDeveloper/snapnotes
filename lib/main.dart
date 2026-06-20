@@ -6,6 +6,7 @@ import 'package:snapnotes/providers/dashboard_notifier.dart';
 import 'package:snapnotes/providers/note_notifier.dart';
 import 'package:snapnotes/providers/ocr_notifier.dart';
 import 'package:snapnotes/providers/scan_notifier.dart';
+import 'package:snapnotes/providers/search_notifier.dart';
 
 import 'core/theme/app_theme.dart';
 import 'database/isar/isar_service.dart';
@@ -55,6 +56,8 @@ class SnapNotesApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ScanNotifier()),
 
         ChangeNotifierProvider(create: (_) => OcrNotifier()),
+
+        ChangeNotifierProvider(create: (_) => SearchNotifier(getIt())),
       ],
       child: const _AppView(),
     );
