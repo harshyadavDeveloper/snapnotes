@@ -6,61 +6,42 @@ import '../../../providers/note_notifier.dart';
 class NoteEditorScreen extends StatefulWidget {
   final int collectionId;
 
-  const NoteEditorScreen({
-    super.key,
-    required this.collectionId,
-  });
+  const NoteEditorScreen({super.key, required this.collectionId});
 
   @override
-  State<NoteEditorScreen> createState() =>
-      _NoteEditorScreenState();
+  State<NoteEditorScreen> createState() => _NoteEditorScreenState();
 }
 
-class _NoteEditorScreenState
-    extends State<NoteEditorScreen> {
-  final _titleController =
-      TextEditingController();
+class _NoteEditorScreenState extends State<NoteEditorScreen> {
+  final _titleController = TextEditingController();
 
-  final _contentController =
-      TextEditingController();
+  final _contentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Create Note',
-        ),
-      ),
+      appBar: AppBar(title: const Text('Create Note')),
 
       body: Padding(
-        padding:
-            const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             TextField(
-              controller:
-                  _titleController,
-              decoration:
-                  const InputDecoration(
-                labelText: 'Title',
-              ),
+              controller: _titleController,
+              decoration: const InputDecoration(labelText: 'Title'),
             ),
 
             const SizedBox(height: 16),
 
             Expanded(
               child: TextField(
-                controller:
-                    _contentController,
+                controller: _contentController,
                 expands: true,
                 maxLines: null,
                 minLines: null,
-                decoration:
-                    const InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Content',
-                  alignLabelWithHint:
-                      true,
+                  alignLabelWithHint: true,
                 ),
               ),
             ),
@@ -69,37 +50,22 @@ class _NoteEditorScreenState
 
             FilledButton(
               onPressed: () async {
-                if (_titleController.text
-                        .trim()
-                        .isEmpty ||
-                    _contentController.text
-                        .trim()
-                        .isEmpty) {
+                if (_titleController.text.trim().isEmpty ||
+                    _contentController.text.trim().isEmpty) {
                   return;
                 }
 
-                await context
-                    .read<NoteNotifier>()
-                    .createNote(
-                      title:
-                          _titleController.text
-                              .trim(),
-                      content:
-                          _contentController.text
-                              .trim(),
-                      collectionId:
-                          widget.collectionId,
-                    );
+                await context.read<NoteNotifier>().createNote(
+                  title: _titleController.text.trim(),
+                  content: _contentController.text.trim(),
+                  collectionId: widget.collectionId,
+                );
 
                 if (mounted) {
-                  Navigator.pop(
-                    context,
-                  );
+                  Navigator.pop(context);
                 }
               },
-              child: const Text(
-                'Save Note',
-              ),
+              child: const Text('Save Note'),
             ),
           ],
         ),

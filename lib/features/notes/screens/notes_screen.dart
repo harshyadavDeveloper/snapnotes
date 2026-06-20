@@ -18,97 +18,66 @@ class NotesScreen extends StatefulWidget {
   });
 
   @override
-  State<NotesScreen> createState() =>
-      _NotesScreenState();
+  State<NotesScreen> createState() => _NotesScreenState();
 }
 
-class _NotesScreenState
-    extends State<NotesScreen> {
+class _NotesScreenState extends State<NotesScreen> {
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) {
-      context
-          .read<NoteNotifier>()
-          .loadNotesByCollection(
-            widget.collectionId,
-          );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<NoteNotifier>().loadNotesByCollection(widget.collectionId);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider =
-        context.watch<NoteNotifier>();
+    final provider = context.watch<NoteNotifier>();
 
     return Scaffold(
-      appBar: AppBar(
-        title:
-            Text(widget.collectionName),
-      ),
+      appBar: AppBar(title: Text(widget.collectionName)),
 
-      floatingActionButton:
-          FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (_) =>
-                  NoteEditorScreen(
-                collectionId:
-                    widget.collectionId,
-              ),
+                  NoteEditorScreen(collectionId: widget.collectionId),
             ),
           );
         },
-        child:
-            const Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
 
       body: _buildBody(provider),
     );
   }
 
-  Widget _buildBody(
-    NoteNotifier provider,
-  ) {
+  Widget _buildBody(NoteNotifier provider) {
     if (provider.isLoading) {
       return const AppLoadingView();
     }
 
     if (provider.error != null) {
-      return AppErrorView(
-        message: provider.error!,
-      );
+      return AppErrorView(message: provider.error!);
     }
 
     if (provider.notes.isEmpty) {
-      return const Center(
-        child: Text(
-          'No Notes Yet',
-        ),
-      );
+      return const Center(child: Text('No Notes Yet'));
     }
 
     return ListView.builder(
-      padding:
-          const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       itemCount: provider.notes.length,
-      itemBuilder: (
-        context,
-        index,
-      ) {
-        final note =
-            provider.notes[index];
+      itemBuilder: (context, index) {
+        final note = provider.notes[index];
 
         return NoteCard(
           note: note,
           onDelete: () {
-            provider.deleteNote(
-              note.id,
-            );
+            provider.deleteNote(note.id);
           },
         );
       },
