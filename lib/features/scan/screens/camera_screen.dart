@@ -31,23 +31,65 @@ class _CameraScreenState extends State<CameraScreen> {
     }
 
     return Scaffold(
-      body: Stack(
-        children: [
-          CameraPreview(provider.cameraController!),
+      body: provider.capturedImage != null
+          ? _buildPreview(provider)
+          : _buildCamera(provider),
+    );
+  }
 
-          Positioned(
-            bottom: 40,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: FloatingActionButton(
-                onPressed: () {},
-                child: const Icon(Icons.camera),
-              ),
+  Widget _buildPreview(ScanNotifier provider) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Image.file(provider.capturedImage!, fit: BoxFit.cover),
+        ),
+
+        Positioned(
+          bottom: 30,
+          left: 20,
+          child: FilledButton.icon(
+            onPressed: () {
+              provider.retakeImage();
+            },
+            icon: const Icon(Icons.refresh),
+            label: const Text('Retake'),
+          ),
+        ),
+
+        Positioned(
+          bottom: 30,
+          right: 20,
+          child: FilledButton.icon(
+            onPressed: () {
+              // next step
+            },
+            icon: const Icon(Icons.check),
+            label: const Text('Use Image'),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCamera(ScanNotifier provider) {
+    return Stack(
+      children: [
+        CameraPreview(provider.cameraController!),
+
+        Positioned(
+          bottom: 40,
+          left: 0,
+          right: 0,
+          child: Center(
+            child: FloatingActionButton(
+              onPressed: () {
+                provider.captureImage();
+              },
+              child: const Icon(Icons.camera),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
