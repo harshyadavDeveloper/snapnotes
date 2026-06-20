@@ -10,26 +10,44 @@ class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
 
   @override
-  State<CameraScreen> createState() => _CameraScreenState();
+  State<CameraScreen> createState() =>
+      _CameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class _CameraScreenState
+    extends State<CameraScreen> {
+  late final ScanNotifier _scanNotifier;
+
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ScanNotifier>().initializeCamera();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) {
+      _scanNotifier =
+          context.read<ScanNotifier>();
+
+      _scanNotifier.initializeCamera();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<ScanNotifier>();
+    final provider =
+        context.watch<ScanNotifier>();
 
-    if (provider.cameraController == null ||
-        !provider.cameraController!.value.isInitialized) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    if (provider.cameraController ==
+            null ||
+        !provider
+            .cameraController!
+            .value
+            .isInitialized) {
+      return const Scaffold(
+        body: Center(
+          child:
+              CircularProgressIndicator(),
+        ),
+      );
     }
 
     return Scaffold(
@@ -39,11 +57,16 @@ class _CameraScreenState extends State<CameraScreen> {
     );
   }
 
-  Widget _buildPreview(ScanNotifier provider) {
+  Widget _buildPreview(
+    ScanNotifier provider,
+  ) {
     return Stack(
       children: [
         Positioned.fill(
-          child: Image.file(provider.capturedImage!, fit: BoxFit.cover),
+          child: Image.file(
+            provider.capturedImage!,
+            fit: BoxFit.cover,
+          ),
         ),
 
         Positioned(
@@ -53,8 +76,11 @@ class _CameraScreenState extends State<CameraScreen> {
             onPressed: () {
               provider.retakeImage();
             },
-            icon: const Icon(Icons.refresh),
-            label: const Text('Retake'),
+            icon: const Icon(
+              Icons.refresh,
+            ),
+            label:
+                const Text('Retake'),
           ),
         ),
 
@@ -63,43 +89,62 @@ class _CameraScreenState extends State<CameraScreen> {
           right: 20,
           child: FilledButton.icon(
             onPressed: () async {
-              final ocrNotifier = context.read<OcrNotifier>();
+              final ocrNotifier =
+                  context.read<
+                      OcrNotifier>();
 
-              await ocrNotifier.recognizeText(provider.capturedImage!);
+              await ocrNotifier
+                  .recognizeText(
+                provider.capturedImage!,
+              );
 
-              if (!context.mounted) return;
+              if (!mounted) return;
 
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (_) =>
-                      OcrResultScreen(extractedText: ocrNotifier.extractedText),
+                      OcrResultScreen(
+                    extractedText:
+                        ocrNotifier
+                            .extractedText,
+                  ),
                 ),
               );
             },
-            icon: const Icon(Icons.check),
-            label: const Text('Use Image'),
+            icon:
+                const Icon(Icons.check),
+            label: const Text(
+              'Use Image',
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildCamera(ScanNotifier provider) {
+  Widget _buildCamera(
+    ScanNotifier provider,
+  ) {
     return Stack(
       children: [
-        CameraPreview(provider.cameraController!),
+        CameraPreview(
+          provider.cameraController!,
+        ),
 
         Positioned(
           bottom: 40,
           left: 0,
           right: 0,
           child: Center(
-            child: FloatingActionButton(
+            child:
+                FloatingActionButton(
               onPressed: () {
                 provider.captureImage();
               },
-              child: const Icon(Icons.camera),
+              child: const Icon(
+                Icons.camera,
+              ),
             ),
           ),
         ),
@@ -109,7 +154,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   void dispose() {
-    context.read<ScanNotifier>().disposeCamera();
+    _scanNotifier.disposeCamera();
 
     super.dispose();
   }
