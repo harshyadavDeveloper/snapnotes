@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapnotes/core/di/service_locator.dart';
 import 'package:snapnotes/providers/collection_provider.dart';
+import 'package:snapnotes/providers/note_notifier.dart';
 
 import 'core/theme/app_theme.dart';
 import 'database/isar/isar_service.dart';
@@ -22,6 +23,9 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => NavigationProvider()),
         ChangeNotifierProvider(
           create: (_) => CollectionNotifier(getIt(), getIt(), getIt()),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => NoteNotifier(getIt(), getIt(), getIt(), getIt()),
         ),
       ],
       child: const SnapNotesApp(),

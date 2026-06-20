@@ -1,4 +1,11 @@
 import 'package:get_it/get_it.dart';
+import 'package:snapnotes/data/datasources/local/note_local_datasource.dart';
+import 'package:snapnotes/data/repositories/note_repository_impl.dart';
+import 'package:snapnotes/domain/repositories/note_repository.dart';
+import 'package:snapnotes/domain/usecases/notes/create_note_usecase.dart';
+import 'package:snapnotes/domain/usecases/notes/delete_note_usecase.dart';
+import 'package:snapnotes/domain/usecases/notes/get_notes_by_collection_usecase.dart';
+import 'package:snapnotes/domain/usecases/notes/get_notes_usecase.dart';
 
 import '../../data/datasources/local/collection_local_datasource.dart';
 import '../../data/repositories/collection_repository_impl.dart';
@@ -21,4 +28,21 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton(() => CreateCollectionUseCase(getIt()));
 
   getIt.registerLazySingleton(() => DeleteCollectionUseCase(getIt()));
+
+  // DataSource
+  getIt.registerLazySingleton(() => NoteLocalDataSource());
+
+  // Repository
+  getIt.registerLazySingleton<NoteRepository>(
+    () => NoteRepositoryImpl(getIt()),
+  );
+
+  // UseCases
+  getIt.registerLazySingleton(() => GetNotesUseCase(getIt()));
+
+  getIt.registerLazySingleton(() => GetNotesByCollectionUseCase(getIt()));
+
+  getIt.registerLazySingleton(() => CreateNoteUseCase(getIt()));
+
+  getIt.registerLazySingleton(() => DeleteNoteUseCase(getIt()));
 }

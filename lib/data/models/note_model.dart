@@ -19,4 +19,6 @@ class NoteModel {
   bool isFavorite = false;
 
   bool isPinned = false;
+
+  List<String> tags = [];
 }
