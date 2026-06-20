@@ -1,6 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snapnotes/features/ocr/screens/ocr_result_screen.dart';
+import 'package:snapnotes/providers/ocr_notifier.dart';
 
 import '../../../providers/scan_notifier.dart';
 
@@ -60,8 +62,20 @@ class _CameraScreenState extends State<CameraScreen> {
           bottom: 30,
           right: 20,
           child: FilledButton.icon(
-            onPressed: () {
-              // next step
+            onPressed: () async {
+              final ocrNotifier = context.read<OcrNotifier>();
+
+              await ocrNotifier.recognizeText(provider.capturedImage!);
+
+              if (!context.mounted) return;
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      OcrResultScreen(extractedText: ocrNotifier.extractedText),
+                ),
+              );
             },
             icon: const Icon(Icons.check),
             label: const Text('Use Image'),

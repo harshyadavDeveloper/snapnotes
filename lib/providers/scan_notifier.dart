@@ -31,8 +31,7 @@ class ScanNotifier extends BaseNotifier {
     if (cameraController == null) return;
 
     await execute(() async {
-      final image =
-          await cameraController!.takePicture();
+      final image = await cameraController!.takePicture();
 
       capturedImage = File(image.path);
 
