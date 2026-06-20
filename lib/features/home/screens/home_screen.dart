@@ -11,9 +11,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('SnapNotes'),
-      ),
+      appBar: AppBar(title: const Text('SnapNotes')),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -57,9 +55,7 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 24),
 
               /// Quick Actions Header
-              AppSectionHeader(
-                title: 'Quick Actions',
-              ),
+              AppSectionHeader(title: 'Quick Actions'),
 
               const SizedBox(height: 12),
 
@@ -72,9 +68,7 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text(
-                            'Scan feature coming soon',
-                          ),
+                          content: Text('Scan feature coming soon'),
                         ),
                       );
                     },
@@ -88,9 +82,7 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text(
-                            'Import feature coming soon',
-                          ),
+                          content: Text('Import feature coming soon'),
                         ),
                       );
                     },
@@ -104,9 +96,7 @@ class HomeScreen extends StatelessWidget {
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                          content: Text(
-                            'Create Note feature coming soon',
-                          ),
+                          content: Text('Create Note feature coming soon'),
                         ),
                       );
                     },
@@ -117,10 +107,7 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 32),
 
               /// Recent Notes Header
-              AppSectionHeader(
-                title: 'Recent Notes',
-                onViewAll: () {},
-              ),
+              AppSectionHeader(title: 'Recent Notes', onViewAll: () {}),
 
               const SizedBox(height: 16),
 

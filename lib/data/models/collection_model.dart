@@ -1,5 +1,3 @@
-
-
 import 'package:isar_community/isar.dart';
 
 part 'collection_model.g.dart';

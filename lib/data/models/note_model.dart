@@ -1,4 +1,3 @@
-
 import 'package:isar_community/isar.dart';
 
 part 'note_model.g.dart';

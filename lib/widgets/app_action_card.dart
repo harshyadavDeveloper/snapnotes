@@ -16,18 +16,16 @@ class AppActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: InkWell(
-        borderRadius:
-            BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(20),
         onTap: onTap,
         child: Card(
           child: Padding(
-            padding:
-                const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                Icon(icon,size:32),
+                Icon(icon, size: 32),
 
-                const SizedBox(height:12),
+                const SizedBox(height: 12),
 
                 Text(title),
               ],

@@ -8,13 +8,10 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider =
-        context.watch<ThemeProvider>();
+    final themeProvider = context.watch<ThemeProvider>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
+      appBar: AppBar(title: const Text('Settings')),
       body: SwitchListTile(
         title: const Text('Dark Mode'),
         value: themeProvider.isDarkMode,

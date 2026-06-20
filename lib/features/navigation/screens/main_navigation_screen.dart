@@ -13,8 +13,7 @@ class MainNavigationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final navigationProvider =
-        context.watch<NavigationProvider>();
+    final navigationProvider = context.watch<NavigationProvider>();
 
     final screens = [
       const HomeScreen(),
@@ -28,11 +27,9 @@ class MainNavigationScreen extends StatelessWidget {
       body: screens[navigationProvider.currentIndex],
 
       bottomNavigationBar: NavigationBar(
-        selectedIndex:
-            navigationProvider.currentIndex,
+        selectedIndex: navigationProvider.currentIndex,
 
-        onDestinationSelected:
-            navigationProvider.changeIndex,
+        onDestinationSelected: navigationProvider.changeIndex,
 
         destinations: const [
           NavigationDestination(
@@ -50,10 +47,7 @@ class MainNavigationScreen extends StatelessWidget {
             selectedIcon: Icon(Icons.camera_alt),
             label: 'Scan',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
+          NavigationDestination(icon: Icon(Icons.search), label: 'Search'),
           NavigationDestination(
             icon: Icon(Icons.settings_outlined),
             selectedIcon: Icon(Icons.settings),
