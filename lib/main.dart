@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:snapnotes/database/isar/isar_service.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await IsarService.instance;
+  final isar = await IsarService.instance;
+
+  debugPrint("Isar Opened Successfully: ${isar.name}");
+
   runApp(const MyApp());
 }
 
