@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:snapnotes/core/state/base_notifier.dart';
 
 import '../data/models/collection_model.dart';
 import '../domain/usecases/collections/create_collection_usecase.dart';
 import '../domain/usecases/collections/delete_collection_usecase.dart';
 import '../domain/usecases/collections/get_collections_usecase.dart';
 
-class CollectionNotifier extends ChangeNotifier {
+class CollectionNotifier extends BaseNotifier {
   final GetCollectionsUseCase _getCollectionsUseCase;
   final CreateCollectionUseCase _createCollectionUseCase;
   final DeleteCollectionUseCase _deleteCollectionUseCase;
@@ -16,63 +16,29 @@ class CollectionNotifier extends ChangeNotifier {
     this._deleteCollectionUseCase,
   );
 
-  bool isLoading = false;
-
-  String? error;
-
   List<CollectionModel> collections = [];
 
   Future<void> loadCollections() async {
-    try {
-      isLoading = true;
-      error = null;
-
-      notifyListeners();
-
+    await execute(() async {
       collections = await _getCollectionsUseCase();
-    } catch (e) {
-      error = e.toString();
-    } finally {
-      isLoading = false;
+
       notifyListeners();
-    }
+    });
   }
 
   Future<void> createCollection(String name) async {
-    try {
-      isLoading = true;
-      error = null;
-
-      notifyListeners();
-
+    await execute(() async {
       await _createCollectionUseCase(name);
 
       await loadCollections();
-    } catch (e) {
-      error = e.toString();
-
-      isLoading = false;
-
-      notifyListeners();
-    }
+    });
   }
 
   Future<void> deleteCollection(int id) async {
-    try {
-      isLoading = true;
-      error = null;
-
-      notifyListeners();
-
+    await execute(() async {
       await _deleteCollectionUseCase(id);
 
       await loadCollections();
-    } catch (e) {
-      error = e.toString();
-
-      isLoading = false;
-
-      notifyListeners();
-    }
+    });
   }
 }
