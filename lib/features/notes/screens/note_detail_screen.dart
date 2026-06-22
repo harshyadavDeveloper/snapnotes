@@ -120,6 +120,15 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
             onPressed: _hasChanges ? _saveNote : null,
             icon: const Icon(Icons.save_outlined),
           ),
+
+          IconButton(
+            onPressed: () async {
+              await context.read<NoteNotifier>().toggleFavorite(widget.note);
+
+              setState(() {});
+            },
+            icon: Icon(widget.note.isFavorite ? Icons.star : Icons.star_border),
+          ),
         ],
       ),
       body: Padding(

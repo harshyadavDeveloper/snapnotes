@@ -56,19 +56,39 @@ class _HomeScreenState extends State<HomeScreen> {
                   /// Stats Section
                   Row(
                     children: [
-                      AppStatCard(
-                        title: 'Notes',
-                        value: provider.totalNotes.toString(),
-                        icon: Icons.note_alt_outlined,
+                      Expanded(
+                        child: AppStatCard(
+                          title: 'Notes',
+                          value: provider.totalNotes.toString(),
+                          icon: Icons.note_alt_outlined,
+                        ),
                       ),
 
-                      SizedBox(width: 12),
+                      const SizedBox(width: 12),
 
-                      AppStatCard(
-                        title: 'Collections',
-                        value: provider.totalCollections.toString(),
-                        icon: Icons.folder_outlined,
+                      Expanded(
+                        child: AppStatCard(
+                          title: 'Collections',
+                          value: provider.totalCollections.toString(),
+                          icon: Icons.folder_outlined,
+                        ),
                       ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: AppStatCard(
+                          title: 'Favorites',
+                          value: provider.totalFavorites.toString(),
+                          icon: Icons.star_outline,
+                        ),
+                      ),
+
+                      const Spacer(),
                     ],
                   ),
 
@@ -153,10 +173,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             },
 
-                            title: Text(
-                              note.title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                            title: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    note.title,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+
+                                if (note.isFavorite)
+                                  const Icon(Icons.star, size: 18),
+                              ],
                             ),
 
                             subtitle: Text(

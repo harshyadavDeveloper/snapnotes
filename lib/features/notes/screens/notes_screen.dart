@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snapnotes/features/notes/screens/note_detail_screen.dart';
 import 'package:snapnotes/widgets/note_card.dart';
 
 import '../../../providers/note_notifier.dart';
@@ -71,11 +72,18 @@ class _NotesScreenState extends State<NotesScreen> {
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: provider.notes.length,
+
       itemBuilder: (context, index) {
         final note = provider.notes[index];
 
         return NoteCard(
           note: note,
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => NoteDetailScreen(note: note)),
+            );
+          },
           onDelete: () {
             provider.deleteNote(note.id);
           },

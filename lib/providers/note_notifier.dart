@@ -1,5 +1,6 @@
 import 'package:snapnotes/core/state/base_notifier.dart';
 import 'package:snapnotes/domain/usecases/notes/get_note_by_id_usecase.dart';
+import 'package:snapnotes/domain/usecases/notes/toggle_favorite_usecase.dart';
 import 'package:snapnotes/domain/usecases/notes/update_note_usecase.dart';
 import 'package:snapnotes/providers/dashboard_notifier.dart';
 
@@ -17,6 +18,7 @@ class NoteNotifier extends BaseNotifier {
   final DashboardNotifier _dashboardNotifier;
   final UpdateNoteUseCase _updateNoteUseCase;
   final GetNoteByIdUseCase _getNoteByIdUseCase;
+  final ToggleFavoriteUseCase _toggleFavoriteUseCase;
 
   NoteNotifier(
     this._getNotesUseCase,
@@ -26,11 +28,15 @@ class NoteNotifier extends BaseNotifier {
     this._dashboardNotifier,
     this._updateNoteUseCase,
     this._getNoteByIdUseCase,
+    this._toggleFavoriteUseCase,
   );
 
   List<NoteModel> notes = [];
 
   int? selectedCollectionId;
+
+  List<NoteModel> get favoriteNotes =>
+    notes.where((note) => note.isFavorite).toList();
 
   Future<void> loadNotes() async {
     await execute(() async {
@@ -105,6 +111,21 @@ class NoteNotifier extends BaseNotifier {
       return null;
     }
   }
+
+  Future<void> toggleFavorite(
+  NoteModel note,
+) async {
+  await execute(() async {
+    await _toggleFavoriteUseCase(
+      note,
+    );
+
+    await _dashboardNotifier
+        .loadDashboard();
+
+    await loadNotes();
+  });
+}
 
   void clearNotes() {
     notes.clear();

@@ -24,6 +24,8 @@ class DashboardNotifier extends BaseNotifier {
 
   List<NoteModel> recentNotes = [];
 
+  int totalFavorites = 0;
+
   Future<void> loadDashboard() async {
     await execute(() async {
       totalNotes = await _getTotalNotesUseCase();
@@ -31,6 +33,8 @@ class DashboardNotifier extends BaseNotifier {
       totalCollections = await _getTotalCollectionsUseCase();
 
       recentNotes = await _getRecentNotesUseCase();
+
+      totalFavorites = recentNotes.where((note) => note.isFavorite).length;
 
       notifyListeners();
     });

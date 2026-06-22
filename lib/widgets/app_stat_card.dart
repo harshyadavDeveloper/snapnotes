@@ -14,23 +14,21 @@ class AppStatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Icon(icon),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            Icon(icon),
 
-              const SizedBox(height: 12),
+            const SizedBox(height: 12),
 
-              Text(value, style: Theme.of(context).textTheme.headlineSmall),
+            Text(value, style: Theme.of(context).textTheme.headlineSmall),
 
-              const SizedBox(height: 4),
+            const SizedBox(height: 4),
 
-              Text(title),
-            ],
-          ),
+            Text(title),
+          ],
         ),
       ),
     );
