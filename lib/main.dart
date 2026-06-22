@@ -7,7 +7,6 @@ import 'package:snapnotes/providers/note_notifier.dart';
 import 'package:snapnotes/providers/ocr_notifier.dart';
 import 'package:snapnotes/providers/scan_notifier.dart';
 import 'package:snapnotes/providers/search_notifier.dart';
-
 import 'core/theme/app_theme.dart';
 import 'database/isar/isar_service.dart';
 import 'features/navigation/screens/main_navigation_screen.dart';

@@ -9,18 +9,15 @@ class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
 
   @override
-  State<FavoritesScreen> createState() =>
-      _FavoritesScreenState();
+  State<FavoritesScreen> createState() => _FavoritesScreenState();
 }
 
-class _FavoritesScreenState
-    extends State<FavoritesScreen> {
+class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<NoteNotifier>().loadNotes();
     });
   }
@@ -30,57 +27,34 @@ class _FavoritesScreenState
     final provider = context.watch<NoteNotifier>();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Favorite Notes',
-        ),
-      ),
+      appBar: AppBar(title: const Text('Favorite Notes')),
       body: _buildBody(provider),
     );
   }
 
-  Widget _buildBody(
-    NoteNotifier provider,
-  ) {
+  Widget _buildBody(NoteNotifier provider) {
     if (provider.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     if (provider.error != null) {
-      return Center(
-        child: Text(
-          provider.error!,
-        ),
-      );
+      return Center(child: Text(provider.error!));
     }
 
-    final favorites =
-        provider.favoriteNotes;
+    final favorites = provider.favoriteNotes;
 
     if (favorites.isEmpty) {
       return const Center(
         child: Column(
-          mainAxisAlignment:
-              MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.star_border,
-              size: 72,
-            ),
+            Icon(Icons.star_border, size: 72),
             SizedBox(height: 16),
-            Text(
-              'No favorite notes yet',
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
+            Text('No favorite notes yet', style: TextStyle(fontSize: 18)),
             SizedBox(height: 8),
             Text(
               'Tap the star icon on a note to add it here',
-              textAlign:
-                  TextAlign.center,
+              textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -88,59 +62,39 @@ class _FavoritesScreenState
     }
 
     return ListView.separated(
-      padding:
-          const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       itemCount: favorites.length,
-      separatorBuilder: (_, __) =>
-          const SizedBox(height: 12),
-      itemBuilder: (
-        context,
-        index,
-      ) {
-        final NoteModel note =
-            favorites[index];
+      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        final NoteModel note = favorites[index];
 
         return Card(
           child: ListTile(
-            leading: const Icon(
-              Icons.star,
-            ),
+            leading: const Icon(Icons.star),
 
             title: Text(
               note.title,
               maxLines: 1,
-              overflow:
-                  TextOverflow.ellipsis,
+              overflow: TextOverflow.ellipsis,
             ),
 
             subtitle: Text(
               note.content,
               maxLines: 2,
-              overflow:
-                  TextOverflow.ellipsis,
+              overflow: TextOverflow.ellipsis,
             ),
 
             trailing: IconButton(
-              icon: const Icon(
-                Icons.star,
-              ),
+              icon: const Icon(Icons.star),
               onPressed: () async {
-                await provider
-                    .toggleFavorite(
-                  note,
-                );
+                await provider.toggleFavorite(note);
               },
             ),
 
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) =>
-                      NoteDetailScreen(
-                    note: note,
-                  ),
-                ),
+                MaterialPageRoute(builder: (_) => NoteDetailScreen(note: note)),
               );
             },
           ),

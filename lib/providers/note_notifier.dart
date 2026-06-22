@@ -36,7 +36,7 @@ class NoteNotifier extends BaseNotifier {
   int? selectedCollectionId;
 
   List<NoteModel> get favoriteNotes =>
-    notes.where((note) => note.isFavorite).toList();
+      notes.where((note) => note.isFavorite).toList();
 
   Future<void> loadNotes() async {
     await execute(() async {
@@ -112,20 +112,15 @@ class NoteNotifier extends BaseNotifier {
     }
   }
 
-  Future<void> toggleFavorite(
-  NoteModel note,
-) async {
-  await execute(() async {
-    await _toggleFavoriteUseCase(
-      note,
-    );
+  Future<void> toggleFavorite(NoteModel note) async {
+    await execute(() async {
+      await _toggleFavoriteUseCase(note);
 
-    await _dashboardNotifier
-        .loadDashboard();
+      await _dashboardNotifier.loadDashboard();
 
-    await loadNotes();
-  });
-}
+      await loadNotes();
+    });
+  }
 
   void clearNotes() {
     notes.clear();
