@@ -111,10 +111,10 @@ class _CameraScreenState extends State<CameraScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    _scanNotifier.disposeCamera();
+  // @override
+  // void dispose() {
+  //   _scanNotifier.disposeCamera();
 
-    super.dispose();
-  }
+  //   super.dispose();
+  // }
 }

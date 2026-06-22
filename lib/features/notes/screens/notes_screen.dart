@@ -40,6 +40,7 @@ class _NotesScreenState extends State<NotesScreen> {
       appBar: AppBar(title: Text(widget.collectionName)),
 
       floatingActionButton: FloatingActionButton(
+        heroTag: 'favorites_fab',
         onPressed: () {
           Navigator.push(
             context,

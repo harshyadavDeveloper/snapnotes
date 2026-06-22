@@ -32,6 +32,7 @@ class _CollectionsScreenState extends State<CollectionsScreen> {
       appBar: AppBar(title: const Text('Collections')),
 
       floatingActionButton: FloatingActionButton(
+        heroTag: 'collections_fab',
         onPressed: () {
           showModalBottomSheet(
             context: context,

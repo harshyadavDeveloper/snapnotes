@@ -24,7 +24,10 @@ class MainNavigationScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      body: screens[navigationProvider.currentIndex],
+      body: IndexedStack(
+        index: navigationProvider.currentIndex,
+        children: screens,
+      ),
 
       bottomNavigationBar: NavigationBar(
         selectedIndex: navigationProvider.currentIndex,

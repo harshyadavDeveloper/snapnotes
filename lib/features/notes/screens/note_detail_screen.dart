@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:snapnotes/core/di/service_locator.dart';
+import 'package:snapnotes/core/services/pdf_service.dart';
 
 import '../../../data/models/note_model.dart';
 import '../../../providers/note_notifier.dart';
@@ -98,6 +102,31 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
     Navigator.pop(context);
   }
 
+  Future<void> _exportPdf() async {
+    final pdfService = getIt<PdfService>();
+
+    final file = await pdfService.generateNotePdf(
+      title: _titleController.text,
+      content: _contentController.text,
+    );
+
+    await OpenFilex.open(file.path);
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('PDF exported successfully')));
+  }
+
+  Future<void> _shareNote() async {
+    await SharePlus.instance.share(
+      ShareParams(
+        text: '${_titleController.text}\n\n${_contentController.text}',
+      ),
+    );
+  }
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -112,6 +141,15 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
       appBar: AppBar(
         title: const Text('Note Details'),
         actions: [
+          IconButton(
+            onPressed: _shareNote,
+            icon: const Icon(Icons.share_outlined),
+          ),
+
+          IconButton(
+            onPressed: _exportPdf,
+            icon: const Icon(Icons.picture_as_pdf_outlined),
+          ),
           IconButton(
             onPressed: _deleteNote,
             icon: const Icon(Icons.delete_outline),

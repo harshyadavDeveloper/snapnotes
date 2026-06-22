@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:snapnotes/core/services/pdf_service.dart';
 import 'package:snapnotes/data/datasources/local/note_local_datasource.dart';
 import 'package:snapnotes/data/repositories/note_repository_impl.dart';
 import 'package:snapnotes/domain/repositories/note_repository.dart';
@@ -66,4 +67,6 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton(() => GetNoteByIdUseCase(getIt()));
 
   getIt.registerLazySingleton(() => ToggleFavoriteUseCase(getIt()));
+
+  getIt.registerLazySingleton(() => PdfService());
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snapnotes/features/favorites/screens/favorites_screen.dart';
 import 'package:snapnotes/features/notes/screens/note_detail_screen.dart';
 import 'package:snapnotes/providers/dashboard_notifier.dart';
+import 'package:snapnotes/providers/navigation_provider.dart';
 
 import '../../../widgets/app_action_card.dart';
 import '../../../widgets/app_empty_state.dart';
@@ -106,23 +108,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: 'Scan',
                         icon: Icons.camera_alt_outlined,
                         onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Scan feature coming soon'),
-                            ),
-                          );
+                          context.read<NavigationProvider>().changeIndex(2);
                         },
                       ),
 
                       const SizedBox(width: 12),
 
                       AppActionCard(
-                        title: 'Import',
-                        icon: Icons.image_outlined,
+                        title: 'Favorites',
+                        icon: Icons.star_outline,
                         onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Import feature coming soon'),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const FavoritesScreen(),
                             ),
                           );
                         },

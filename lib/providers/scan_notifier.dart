@@ -12,6 +12,10 @@ class ScanNotifier extends BaseNotifier {
   File? capturedImage;
 
   Future<void> initializeCamera() async {
+    if (cameraController != null && cameraController!.value.isInitialized) {
+      return;
+    }
+
     await execute(() async {
       cameras = await availableCameras();
 
@@ -46,5 +50,15 @@ class ScanNotifier extends BaseNotifier {
 
   Future<void> disposeCamera() async {
     await cameraController?.dispose();
+
+    cameraController = null;
+
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    cameraController?.dispose();
+    super.dispose();
   }
 }
