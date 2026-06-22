@@ -31,4 +31,18 @@ class NoteLocalDataSource {
       await isar.noteModels.delete(id);
     });
   }
+
+  Future<void> updateNote(NoteModel note) async {
+    final isar = await IsarService.instance;
+
+    await isar.writeTxn(() async {
+      await isar.noteModels.put(note);
+    });
+  }
+
+  Future<NoteModel?> getNoteById(int id) async {
+    final isar = await IsarService.instance;
+
+    return isar.noteModels.get(id);
+  }
 }

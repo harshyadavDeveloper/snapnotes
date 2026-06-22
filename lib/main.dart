@@ -50,6 +50,8 @@ class SnapNotesApp extends StatelessWidget {
             getIt(),
             getIt(),
             dashboardNotifier,
+            getIt(),
+            getIt(),
           ),
         ),
 

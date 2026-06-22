@@ -1,4 +1,6 @@
 import 'package:snapnotes/core/state/base_notifier.dart';
+import 'package:snapnotes/domain/usecases/notes/get_note_by_id_usecase.dart';
+import 'package:snapnotes/domain/usecases/notes/update_note_usecase.dart';
 import 'package:snapnotes/providers/dashboard_notifier.dart';
 
 import '../data/models/note_model.dart';
@@ -13,6 +15,8 @@ class NoteNotifier extends BaseNotifier {
   final CreateNoteUseCase _createNoteUseCase;
   final DeleteNoteUseCase _deleteNoteUseCase;
   final DashboardNotifier _dashboardNotifier;
+  final UpdateNoteUseCase _updateNoteUseCase;
+  final GetNoteByIdUseCase _getNoteByIdUseCase;
 
   NoteNotifier(
     this._getNotesUseCase,
@@ -20,6 +24,8 @@ class NoteNotifier extends BaseNotifier {
     this._createNoteUseCase,
     this._deleteNoteUseCase,
     this._dashboardNotifier,
+    this._updateNoteUseCase,
+    this._getNoteByIdUseCase,
   );
 
   List<NoteModel> notes = [];
@@ -78,6 +84,26 @@ class NoteNotifier extends BaseNotifier {
         await loadNotes();
       }
     });
+  }
+
+  Future<void> updateNote(NoteModel note) async {
+    await execute(() async {
+      await _updateNoteUseCase(note);
+
+      await _dashboardNotifier.loadDashboard();
+
+      await loadNotes();
+    });
+  }
+
+  Future<NoteModel?> getNoteById(int id) async {
+    try {
+      return await _getNoteByIdUseCase(id);
+    } catch (e) {
+      setError(e.toString());
+
+      return null;
+    }
   }
 
   void clearNotes() {

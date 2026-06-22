@@ -8,4 +8,8 @@ abstract class NoteRepository {
   Future<void> createNote(NoteModel note);
 
   Future<void> deleteNote(int id);
+
+  Future<void> updateNote(NoteModel note);
+
+  Future<NoteModel?> getNoteById(int id);
 }

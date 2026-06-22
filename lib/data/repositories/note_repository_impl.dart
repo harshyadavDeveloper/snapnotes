@@ -26,4 +26,14 @@ class NoteRepositoryImpl implements NoteRepository {
   Future<void> deleteNote(int id) {
     return _localDatasource.deleteNote(id);
   }
+
+  @override
+  Future<void> updateNote(NoteModel note) {
+    return _localDatasource.updateNote(note);
+  }
+
+  @override
+  Future<NoteModel?> getNoteById(int id) {
+    return _localDatasource.getNoteById(id);
+  }
 }

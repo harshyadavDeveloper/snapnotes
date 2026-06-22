@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snapnotes/features/notes/screens/note_detail_screen.dart';
 import 'package:snapnotes/providers/dashboard_notifier.dart';
 
 import '../../../widgets/app_action_card.dart';
@@ -143,6 +144,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         return Card(
                           child: ListTile(
                             leading: const Icon(Icons.note_alt_outlined),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => NoteDetailScreen(note: note),
+                                ),
+                              );
+                            },
 
                             title: Text(
                               note.title,
