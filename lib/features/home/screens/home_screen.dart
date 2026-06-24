@@ -277,7 +277,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   const SizedBox(height: 32),
 
-                  AppSectionHeader(title: 'Recent Notes', onViewAll: () {}),
+                  Row(
+                    children: [
+                      Text(
+                        'Recent Notes',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+
+                      const Spacer(),
+
+                      TextButton(
+                        onPressed: () {
+                          context.read<NavigationProvider>().changeIndex(1);
+                        },
+                        child: const Text('View All'),
+                      ),
+                    ],
+                  ),
 
                   const SizedBox(height: 16),
 
@@ -292,40 +310,110 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) {
                         final note = dashboardProvider.recentNotes[index];
 
-                        return Card(
-                          child: ListTile(
-                            leading: const Icon(Icons.note_alt_outlined),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => NoteDetailScreen(note: note),
-                                ),
-                              );
-                            },
-
-                            title: Row(
+                        return InkWell(
+                          borderRadius: BorderRadius.circular(24),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => NoteDetailScreen(note: note),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(18),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(24),
+                              color: Theme.of(context).colorScheme.surface,
+                              border: Border.all(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.outline.withValues(alpha: .08),
+                              ),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Expanded(
-                                  child: Text(
-                                    note.title,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
+                                Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withValues(alpha: .12),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Icon(
+                                        Icons.note_alt_outlined,
+                                        size: 20,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
+                                      ),
+                                    ),
+
+                                    const Spacer(),
+
+                                    if (note.isFavorite)
+                                      const Icon(Icons.star_rounded, size: 20),
+
+                                    const SizedBox(width: 8),
+
+                                    const Icon(Icons.chevron_right),
+                                  ],
                                 ),
 
-                                if (note.isFavorite)
-                                  const Icon(Icons.star, size: 18),
+                                const SizedBox(height: 16),
+
+                                Text(
+                                  note.title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.titleMedium
+                                      ?.copyWith(fontWeight: FontWeight.w600),
+                                ),
+
+                                const SizedBox(height: 8),
+
+                                Text(
+                                  note.content,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(
+                                        height: 1.4,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurfaceVariant,
+                                      ),
+                                ),
+
+                                const SizedBox(height: 14),
+
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.access_time,
+                                      size: 14,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurfaceVariant,
+                                    ),
+
+                                    const SizedBox(width: 4),
+
+                                    Text(
+                                      '${note.updatedAt.day}/${note.updatedAt.month}/${note.updatedAt.year}',
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall,
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
-
-                            subtitle: Text(
-                              note.content,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-
-                            trailing: const Icon(Icons.chevron_right),
                           ),
                         );
                       },
