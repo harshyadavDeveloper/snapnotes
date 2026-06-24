@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapnotes/core/di/service_locator.dart';
+import 'package:snapnotes/providers/app_info_provider.dart';
 import 'package:snapnotes/providers/collection_provider.dart';
 import 'package:snapnotes/providers/dashboard_notifier.dart';
 import 'package:snapnotes/providers/note_notifier.dart';
@@ -60,6 +61,10 @@ class SnapNotesApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => OcrNotifier()),
 
         ChangeNotifierProvider(create: (_) => SearchNotifier(getIt())),
+
+        ChangeNotifierProvider(
+  create: (_) => AppInfoProvider()..load(),
+),
       ],
       child: const _AppView(),
     );
