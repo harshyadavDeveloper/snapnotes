@@ -1,7 +1,6 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
-import 'package:flutter/widgets.dart';
+import 'package:snapnotes/features/scan/domain/scan_mode.dart';
 
 import '../core/state/base_notifier.dart';
 
@@ -12,13 +11,18 @@ class ScanNotifier extends BaseNotifier {
 
   File? capturedImage;
 
-  void setCapturedImage(
-  File image,
-) {
-  capturedImage = image;
+  ScanMode selectedMode = ScanMode.document;
 
-  notifyListeners();
-}
+  void changeMode(ScanMode mode) {
+    selectedMode = mode;
+    notifyListeners();
+  }
+
+  void setCapturedImage(File image) {
+    capturedImage = image;
+
+    notifyListeners();
+  }
 
   Future<void> initializeCamera() async {
     if (cameraController != null && cameraController!.value.isInitialized) {
@@ -40,16 +44,15 @@ class ScanNotifier extends BaseNotifier {
     });
   }
 
- Future<File?> captureImage() async {
-  if (cameraController == null) {
-    return null;
+  Future<File?> captureImage() async {
+    if (cameraController == null) {
+      return null;
+    }
+
+    final image = await cameraController!.takePicture();
+
+    return File(image.path);
   }
-
-  final image =
-      await cameraController!.takePicture();
-
-  return File(image.path);
-}
 
   void retakeImage() {
     capturedImage = null;

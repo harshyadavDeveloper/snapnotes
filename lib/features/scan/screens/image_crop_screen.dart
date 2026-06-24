@@ -7,20 +7,14 @@ import 'package:flutter/material.dart';
 class ImageCropScreen extends StatefulWidget {
   final File image;
 
-  const ImageCropScreen({
-    super.key,
-    required this.image,
-  });
+  const ImageCropScreen({super.key, required this.image});
 
   @override
-  State<ImageCropScreen> createState() =>
-      _ImageCropScreenState();
+  State<ImageCropScreen> createState() => _ImageCropScreenState();
 }
 
-class _ImageCropScreenState
-    extends State<ImageCropScreen> {
-  final CropController _cropController =
-      CropController();
+class _ImageCropScreenState extends State<ImageCropScreen> {
+  final CropController _cropController = CropController();
 
   Uint8List? _imageData;
 
@@ -34,8 +28,7 @@ class _ImageCropScreenState
   }
 
   Future<void> _loadImage() async {
-    final bytes =
-        await widget.image.readAsBytes();
+    final bytes = await widget.image.readAsBytes();
 
     if (!mounted) return;
 
@@ -52,28 +45,20 @@ class _ImageCropScreenState
     _cropController.crop();
   }
 
-  Future<void> _onCropped(
-    CropResult result,
-  ) async {
+  Future<void> _onCropped(CropResult result) async {
     switch (result) {
       case CropSuccess(:final croppedImage):
-        final tempDir =
-            Directory.systemTemp;
+        final tempDir = Directory.systemTemp;
 
         final file = File(
           '${tempDir.path}/cropped_${DateTime.now().millisecondsSinceEpoch}.jpg',
         );
 
-        await file.writeAsBytes(
-          croppedImage,
-        );
+        await file.writeAsBytes(croppedImage);
 
         if (!mounted) return;
 
-        Navigator.pop(
-          context,
-          file,
-        );
+        Navigator.pop(context, file);
 
         break;
 
@@ -84,14 +69,9 @@ class _ImageCropScreenState
           _isCropping = false;
         });
 
-        ScaffoldMessenger.of(context)
-            .showSnackBar(
-          SnackBar(
-            content: Text(
-              'Crop failed: $cause',
-            ),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Crop failed: $cause')));
 
         break;
     }
@@ -100,48 +80,30 @@ class _ImageCropScreenState
   @override
   Widget build(BuildContext context) {
     if (_imageData == null) {
-      return const Scaffold(
-        body: Center(
-          child:
-              CircularProgressIndicator(),
-        ),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Crop Document',
-        ),
-      ),
+      appBar: AppBar(title: const Text('Crop Document')),
       body: Column(
         children: [
           Expanded(
             child: Crop(
               image: _imageData!,
-              controller:
-                  _cropController,
+              controller: _cropController,
               onCropped: _onCropped,
               withCircleUi: false,
               interactive: true,
               // initialSize: 0.9,
-              baseColor:
-                  Colors.black,
-              maskColor:
-                  Colors.black54,
-              cornerDotBuilder:
-                  (
-                    size,
-                    edgeAlignment,
-                  ) {
+              baseColor: Colors.black,
+              maskColor: Colors.black54,
+              cornerDotBuilder: (size, edgeAlignment) {
                 return Container(
                   width: size,
                   height: size,
-                  decoration:
-                      const BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
-                    shape:
-                        BoxShape.circle,
+                    shape: BoxShape.circle,
                   ),
                 );
               },
@@ -149,24 +111,13 @@ class _ImageCropScreenState
           ),
 
           Padding(
-            padding:
-                const EdgeInsets.all(
-              16,
-            ),
+            padding: const EdgeInsets.all(16),
             child: SizedBox(
               width: double.infinity,
               child: FilledButton.icon(
-                onPressed:
-                    _isCropping
-                        ? null
-                        : _cropImage,
-                icon:
-                    const Icon(Icons.crop),
-                label: Text(
-                  _isCropping
-                      ? 'Cropping...'
-                      : 'Crop Image',
-                ),
+                onPressed: _isCropping ? null : _cropImage,
+                icon: const Icon(Icons.crop),
+                label: Text(_isCropping ? 'Cropping...' : 'Crop Image'),
               ),
             ),
           ),

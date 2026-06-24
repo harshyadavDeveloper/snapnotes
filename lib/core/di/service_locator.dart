@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:snapnotes/core/services/image_cropper_service.dart';
 import 'package:snapnotes/core/services/pdf_service.dart';
 import 'package:snapnotes/data/datasources/local/note_local_datasource.dart';
 import 'package:snapnotes/data/repositories/note_repository_impl.dart';
