@@ -74,17 +74,15 @@ class SettingsScreen extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-         _SettingsCard(
-  child: ListTile(
-    leading: const Icon(Icons.info_outline),
-    title: const Text('App Version'),
-    subtitle: Text(
-      appInfo.version.isEmpty
-          ? 'Loading...'
-          : appInfo.version,
-    ),
-  ),
-),
+          _SettingsCard(
+            child: ListTile(
+              leading: const Icon(Icons.info_outline),
+              title: const Text('App Version'),
+              subtitle: Text(
+                appInfo.version.isEmpty ? 'Loading...' : appInfo.version,
+              ),
+            ),
+          ),
 
           const SizedBox(height: 16),
 

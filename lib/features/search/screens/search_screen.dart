@@ -14,11 +14,12 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
 
-    @override
+  @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<SearchNotifier>();
@@ -62,7 +63,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ],
                   ),
                   child: TextField(
-                      controller: _searchController,
+                    controller: _searchController,
                     decoration: InputDecoration(
                       hintText: 'Search notes...',
                       prefixIcon: const Icon(Icons.search),
@@ -71,7 +72,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           ? IconButton(
                               icon: const Icon(Icons.close),
                               onPressed: () {
-                                    _searchController.clear();
+                                _searchController.clear();
                                 provider.clear();
                               },
                             )

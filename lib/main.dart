@@ -62,9 +62,7 @@ class SnapNotesApp extends StatelessWidget {
 
         ChangeNotifierProvider(create: (_) => SearchNotifier(getIt())),
 
-        ChangeNotifierProvider(
-  create: (_) => AppInfoProvider()..load(),
-),
+        ChangeNotifierProvider(create: (_) => AppInfoProvider()..load()),
       ],
       child: const _AppView(),
     );
