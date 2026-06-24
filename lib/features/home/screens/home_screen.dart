@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapnotes/features/favorites/screens/favorites_screen.dart';
+import 'package:snapnotes/features/notes/screens/create_note_screen.dart';
 import 'package:snapnotes/features/notes/screens/note_detail_screen.dart';
 import 'package:snapnotes/providers/dashboard_notifier.dart';
 import 'package:snapnotes/providers/navigation_provider.dart';
@@ -133,9 +134,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: 'Create',
                         icon: Icons.edit_note_outlined,
                         onTap: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Create Note feature coming soon'),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const CreateNoteScreen(),
                             ),
                           );
                         },
