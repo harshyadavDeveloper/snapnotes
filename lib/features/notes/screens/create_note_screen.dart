@@ -13,10 +13,10 @@ class CreateNoteScreen extends StatefulWidget {
 
 class _CreateNoteScreenState extends State<CreateNoteScreen> {
   final _titleController = TextEditingController();
-
   final _contentController = TextEditingController();
 
   int? _selectedCollectionId;
+  int _wordCount = 0;
 
   @override
   void initState() {
@@ -25,14 +25,36 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<CollectionNotifier>().loadCollections();
     });
+
+    _contentController.addListener(_updateWordCount);
+  }
+
+  void _updateWordCount() {
+    setState(() {
+      _wordCount = _contentController.text
+          .trim()
+          .split(RegExp(r'\s+'))
+          .where((e) => e.isNotEmpty)
+          .length;
+    });
   }
 
   Future<void> _saveNote() async {
     if (_titleController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter a title'),
+        ),
+      );
       return;
     }
 
     if (_selectedCollectionId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select a collection'),
+        ),
+      );
       return;
     }
 
@@ -44,11 +66,13 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
 
     if (!mounted) return;
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('Note created')));
-
     Navigator.pop(context);
+  }
+
+  String get _formattedDate {
+    final now = DateTime.now();
+
+    return '${now.day}/${now.month}/${now.year}';
   }
 
   @override
@@ -64,68 +88,185 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
     final collectionProvider = context.watch<CollectionNotifier>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Create Note')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: 'Title',
-                border: OutlineInputBorder(),
-              ),
+      resizeToAvoidBottomInset: true,
+
+      appBar: AppBar(
+        title: const Text('New Note'),
+
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: FilledButton.icon(
+              onPressed: _saveNote,
+              icon: const Icon(Icons.check),
+              label: const Text('Save'),
             ),
+          ),
+        ],
+      ),
 
-            const SizedBox(height: 16),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: .04),
 
-            DropdownButtonFormField<int>(
-              value: _selectedCollectionId,
-              decoration: const InputDecoration(
-                labelText: 'Collection',
-                border: OutlineInputBorder(),
-              ),
-              items: collectionProvider.collections
-                  .map(
-                    (collection) => DropdownMenuItem(
-                      value: collection.id,
-                      child: Text(collection.name),
+              Colors.transparent,
+            ],
+          ),
+        ),
+
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /// Collection Picker
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .outline
+                          .withValues(alpha: .08),
                     ),
-                  )
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  _selectedCollectionId = value;
-                });
-              },
-            ),
-
-            const SizedBox(height: 16),
-
-            Expanded(
-              child: TextField(
-                controller: _contentController,
-                expands: true,
-                minLines: null,
-                maxLines: null,
-                decoration: const InputDecoration(
-                  labelText: 'Content',
-                  alignLabelWithHint: true,
-                  border: OutlineInputBorder(),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<int>(
+                      value: _selectedCollectionId,
+                      isExpanded: true,
+                      hint: const Text('Select Collection'),
+                      items: collectionProvider.collections
+                          .map(
+                            (collection) => DropdownMenuItem(
+                              value: collection.id,
+                              child: Text(collection.name),
+                            ),
+                          )
+                          .toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedCollectionId = value;
+                        });
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
 
-            const SizedBox(height: 16),
+                const SizedBox(height: 20),
 
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: _saveNote,
-                child: const Text('Save Note'),
-              ),
+                /// Title
+                TextField(
+                  controller: _titleController,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineMedium
+                      ?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                  textCapitalization:
+                      TextCapitalization.sentences,
+                  decoration: const InputDecoration(
+                    hintText: 'Untitled Note',
+                    border: InputBorder.none,
+                  ),
+                ),
+
+                /// Metadata
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(
+                    vertical: 8,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.schedule_rounded,
+                        size: 16,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurfaceVariant,
+                      ),
+
+                      const SizedBox(width: 6),
+
+                      Text(
+                        'Created $_formattedDate',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall,
+                      ),
+                    ],
+                  ),
+                ),
+
+                const Divider(height: 32),
+
+                /// Content
+                Expanded(
+                  child: TextField(
+                    controller: _contentController,
+                    expands: true,
+                    maxLines: null,
+                    minLines: null,
+                    textCapitalization:
+                        TextCapitalization.sentences,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge,
+                    decoration: const InputDecoration(
+                      hintText:
+                          'Start writing your note...',
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                /// Footer
+                Row(
+                  children: [
+                    Icon(
+                      Icons.edit_note_rounded,
+                      size: 16,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurfaceVariant,
+                    ),
+
+                    const SizedBox(width: 6),
+
+                    Text(
+                      '$_wordCount words',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall,
+                    ),
+
+                    const Spacer(),
+
+                    Text(
+                      '${_contentController.text.length} characters',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall,
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
