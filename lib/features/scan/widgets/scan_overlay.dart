@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snapnotes/features/scan/widgets/scan_line.dart';
 
 import '../../../providers/scan_notifier.dart';
 import '../domain/scan_mode.dart';
@@ -31,11 +32,22 @@ class ScanOverlay extends StatelessWidget {
 
     return IgnorePointer(
       child: Center(
-        child: CustomPaint(
-          painter: ScannerCornerPainter(
-            color: Theme.of(context).colorScheme.primary,
+        child: SizedBox(
+          width: width,
+          height: height,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: CustomPaint(
+                  painter: ScannerCornerPainter(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ),
+
+              const ScanLine(),
+            ],
           ),
-          child: SizedBox(width: width, height: height),
         ),
       ),
     );
