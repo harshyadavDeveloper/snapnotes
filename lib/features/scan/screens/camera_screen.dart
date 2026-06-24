@@ -283,9 +283,11 @@ class _CameraScreenState extends State<CameraScreen> {
                 ),
 
                 _buildActionButton(
-                  icon: Icons.flash_on_outlined,
-                  label: 'Flash',
-                  onTap: () {},
+                  icon: provider.isFlashOn ? Icons.flash_on : Icons.flash_off,
+                  label:provider.isFlashOn? 'Flash On': 'Flash Off',
+                  onTap: () {
+                    provider.toggleFlash();
+                  },
                 ),
               ],
             ),

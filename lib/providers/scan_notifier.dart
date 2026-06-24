@@ -16,6 +16,8 @@ class ScanNotifier extends BaseNotifier {
 
   final ImagePicker _picker = ImagePicker();
 
+  bool isFlashOn = false;
+
   void changeMode(ScanMode mode) {
     selectedMode = mode;
     notifyListeners();
@@ -63,16 +65,26 @@ class ScanNotifier extends BaseNotifier {
   }
 
   Future<File?> pickFromGallery() async {
-  final picked = await _picker.pickImage(
-    source: ImageSource.gallery,
-  );
+    final picked = await _picker.pickImage(source: ImageSource.gallery);
 
-  if (picked == null) {
-    return null;
+    if (picked == null) {
+      return null;
+    }
+
+    return File(picked.path);
   }
 
-  return File(picked.path);
-}
+  Future<void> toggleFlash() async {
+    if (cameraController == null) return;
+
+    isFlashOn = !isFlashOn;
+
+    await cameraController!.setFlashMode(
+      isFlashOn ? FlashMode.torch : FlashMode.off,
+    );
+
+    notifyListeners();
+  }
 
   Future<void> disposeCamera() async {
     await cameraController?.dispose();
@@ -81,7 +93,6 @@ class ScanNotifier extends BaseNotifier {
 
     notifyListeners();
   }
-
 
   @override
   void dispose() {
