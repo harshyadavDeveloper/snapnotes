@@ -6,10 +6,7 @@ import '../../../providers/note_notifier.dart';
 class NoteEditorScreen extends StatefulWidget {
   final int collectionId;
 
-  const NoteEditorScreen({
-    super.key,
-    required this.collectionId,
-  });
+  const NoteEditorScreen({super.key, required this.collectionId});
 
   @override
   State<NoteEditorScreen> createState() => _NoteEditorScreenState();
@@ -42,9 +39,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
     if (_titleController.text.trim().isEmpty ||
         _contentController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Title and content are required'),
-        ),
+        const SnackBar(content: Text('Title and content are required')),
       );
       return;
     }
@@ -100,9 +95,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Theme.of(
-                context,
-              ).colorScheme.primary.withValues(alpha: .04),
+              Theme.of(context).colorScheme.primary.withValues(alpha: .04),
 
               Colors.transparent,
             ],
@@ -136,9 +129,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                       Icon(
                         Icons.schedule_rounded,
                         size: 16,
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.onSurfaceVariant,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
 
                       const SizedBox(width: 6),
@@ -177,9 +168,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                     Icon(
                       Icons.edit_note_rounded,
                       size: 16,
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurfaceVariant,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
 
                     const SizedBox(width: 6),

@@ -41,19 +41,15 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
 
   Future<void> _saveNote() async {
     if (_titleController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter a title'),
-        ),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please enter a title')));
       return;
     }
 
     if (_selectedCollectionId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select a collection'),
-        ),
+        const SnackBar(content: Text('Please select a collection')),
       );
       return;
     }
@@ -111,9 +107,7 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Theme.of(
-                context,
-              ).colorScheme.primary.withValues(alpha: .04),
+              Theme.of(context).colorScheme.primary.withValues(alpha: .04),
 
               Colors.transparent,
             ],
@@ -128,17 +122,14 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
               children: [
                 /// Collection Picker
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .outline
-                          .withValues(alpha: .08),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.outline.withValues(alpha: .08),
                     ),
                   ),
                   child: DropdownButtonHideUnderline(
@@ -168,14 +159,10 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                 /// Title
                 TextField(
                   controller: _titleController,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium
-                      ?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                  textCapitalization:
-                      TextCapitalization.sentences,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textCapitalization: TextCapitalization.sentences,
                   decoration: const InputDecoration(
                     hintText: 'Untitled Note',
                     border: InputBorder.none,
@@ -184,27 +171,20 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
 
                 /// Metadata
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(
-                    vertical: 8,
-                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Row(
                     children: [
                       Icon(
                         Icons.schedule_rounded,
                         size: 16,
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurfaceVariant,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
 
                       const SizedBox(width: 6),
 
                       Text(
                         'Created $_formattedDate',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall,
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
                   ),
@@ -219,14 +199,10 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                     expands: true,
                     maxLines: null,
                     minLines: null,
-                    textCapitalization:
-                        TextCapitalization.sentences,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge,
+                    textCapitalization: TextCapitalization.sentences,
+                    style: Theme.of(context).textTheme.bodyLarge,
                     decoration: const InputDecoration(
-                      hintText:
-                          'Start writing your note...',
+                      hintText: 'Start writing your note...',
                       border: InputBorder.none,
                     ),
                   ),
@@ -240,27 +216,21 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                     Icon(
                       Icons.edit_note_rounded,
                       size: 16,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .onSurfaceVariant,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
 
                     const SizedBox(width: 6),
 
                     Text(
                       '$_wordCount words',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
 
                     const Spacer(),
 
                     Text(
                       '${_contentController.text.length} characters',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall,
+                      style: Theme.of(context).textTheme.bodySmall,
                     ),
                   ],
                 ),
