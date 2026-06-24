@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/widgets.dart';
 
 import '../core/state/base_notifier.dart';
 
@@ -10,6 +11,14 @@ class ScanNotifier extends BaseNotifier {
   List<CameraDescription> cameras = [];
 
   File? capturedImage;
+
+  void setCapturedImage(
+  File image,
+) {
+  capturedImage = image;
+
+  notifyListeners();
+}
 
   Future<void> initializeCamera() async {
     if (cameraController != null && cameraController!.value.isInitialized) {
@@ -31,17 +40,16 @@ class ScanNotifier extends BaseNotifier {
     });
   }
 
-  Future<void> captureImage() async {
-    if (cameraController == null) return;
-
-    await execute(() async {
-      final image = await cameraController!.takePicture();
-
-      capturedImage = File(image.path);
-
-      notifyListeners();
-    });
+ Future<File?> captureImage() async {
+  if (cameraController == null) {
+    return null;
   }
+
+  final image =
+      await cameraController!.takePicture();
+
+  return File(image.path);
+}
 
   void retakeImage() {
     capturedImage = null;

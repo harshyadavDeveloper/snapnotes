@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapnotes/features/ocr/screens/ocr_result_screen.dart';
+import 'package:snapnotes/features/scan/screens/image_crop_screen.dart';
 import 'package:snapnotes/providers/ocr_notifier.dart';
 
 import '../../../providers/scan_notifier.dart';
@@ -100,8 +103,29 @@ class _CameraScreenState extends State<CameraScreen> {
           right: 0,
           child: Center(
             child: FloatingActionButton(
-              onPressed: () {
-                provider.captureImage();
+              onPressed: () async {
+                final image = await provider.captureImage();
+
+                if (image == null) {
+                  return;
+                }
+
+                if (!context.mounted) {
+                  return;
+                }
+
+                final croppedImage = await Navigator.push<File>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ImageCropScreen(image: image),
+                  ),
+                );
+
+                if (croppedImage == null) {
+                  return;
+                }
+
+                provider.setCapturedImage(croppedImage);
               },
               child: const Icon(Icons.camera),
             ),
