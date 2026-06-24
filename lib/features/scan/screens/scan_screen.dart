@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:snapnotes/features/scan/screens/camera_screen.dart';
 
-class ScanScreen extends StatefulWidget {
+import 'camera_screen.dart';
+
+class ScanScreen extends StatelessWidget {
   const ScanScreen({super.key});
 
   @override
-  State<ScanScreen> createState() => _ScanScreenState();
-}
-
-class _ScanScreenState extends State<ScanScreen> {
-  @override
   Widget build(BuildContext context) {
-    return const CameraScreen();
+    return Scaffold(body: Stack(children: [const CameraScreen()]));
   }
 }

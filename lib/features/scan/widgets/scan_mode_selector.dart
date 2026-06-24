@@ -13,28 +13,31 @@ class ScanModeSelector extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(12),
-      child: SegmentedButton<ScanMode>(
-        segments: const [
-          ButtonSegment(
-            value: ScanMode.document,
-            label: Text('Document'),
-            icon: Icon(Icons.description),
-          ),
-          ButtonSegment(
-            value: ScanMode.receipt,
-            label: Text('Receipt'),
-            icon: Icon(Icons.receipt_long),
-          ),
-          ButtonSegment(
-            value: ScanMode.photo,
-            label: Text('Photo'),
-            icon: Icon(Icons.image),
-          ),
-        ],
-        selected: {provider.selectedMode},
-        onSelectionChanged: (value) {
-          provider.changeMode(value.first);
-        },
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: SegmentedButton<ScanMode>(
+          segments: const [
+            ButtonSegment(
+              value: ScanMode.document,
+              label: Text('Document'),
+              icon: Icon(Icons.description),
+            ),
+            ButtonSegment(
+              value: ScanMode.receipt,
+              label: Text('Receipt'),
+              icon: Icon(Icons.receipt_long),
+            ),
+            ButtonSegment(
+              value: ScanMode.photo,
+              label: Text('Photo'),
+              icon: Icon(Icons.image),
+            ),
+          ],
+          selected: {provider.selectedMode},
+          onSelectionChanged: (value) {
+            provider.changeMode(value.first);
+          },
+        ),
       ),
     );
   }

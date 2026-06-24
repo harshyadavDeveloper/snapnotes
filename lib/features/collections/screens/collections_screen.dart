@@ -29,9 +29,25 @@ class _CollectionsScreenState extends State<CollectionsScreen> {
     final provider = context.watch<CollectionNotifier>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Collections')),
+      appBar: AppBar(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Collections',
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+            ),
+            Text(
+              '${provider.collections.length} folders',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ),
+      ),
 
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         heroTag: 'collections_fab',
         onPressed: () {
           showModalBottomSheet(
@@ -40,7 +56,8 @@ class _CollectionsScreenState extends State<CollectionsScreen> {
             builder: (_) => const CreateCollectionBottomSheet(),
           );
         },
-        child: const Icon(Icons.add),
+        icon: const Icon(Icons.add),
+        label: const Text('Collection'),
       ),
 
       body: _buildBody(provider),
@@ -57,7 +74,33 @@ class _CollectionsScreenState extends State<CollectionsScreen> {
     }
 
     if (provider.collections.isEmpty) {
-      return const Center(child: Text('No Collections Yet'));
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.folder_open_outlined,
+              size: 72,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+
+            const SizedBox(height: 16),
+
+            Text(
+              'No Collections Yet',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+
+            const SizedBox(height: 8),
+
+            Text(
+              'Create your first collection to organize notes.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
+      );
     }
 
     return ListView.builder(
@@ -65,57 +108,125 @@ class _CollectionsScreenState extends State<CollectionsScreen> {
       itemBuilder: (context, index) {
         final collection = provider.collections[index];
 
-        return ListTile(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => NotesScreen(
-                  collectionId: collection.id,
-                  collectionName: collection.name,
+        return Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(24),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => NotesScreen(
+                    collectionId: collection.id,
+                    collectionName: collection.name,
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                color: Theme.of(context).colorScheme.surface,
+                border: Border.all(
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.outline.withValues(alpha: .08),
                 ),
               ),
-            );
-          },
-          leading: const Icon(Icons.folder),
-
-          title: Text(collection.name),
-
-          subtitle: Text(
-            'Created ${collection.createdAt.day}/${collection.createdAt.month}/${collection.createdAt.year}',
-          ),
-
-          trailing: IconButton(
-            icon: const Icon(Icons.delete_outline),
-            onPressed: () async {
-              final shouldDelete = await showDialog<bool>(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text('Delete Collection'),
-                    content: Text('Delete "${collection.name}"?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context, false);
-                        },
-                        child: const Text('Cancel'),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: .12),
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Icon(
+                          Icons.folder_rounded,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
-                      FilledButton(
-                        onPressed: () {
-                          Navigator.pop(context, true);
+
+                      const Spacer(),
+
+                      IconButton(
+                        icon: const Icon(Icons.delete_outline),
+                        onPressed: () async {
+                          final shouldDelete = await showDialog<bool>(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Delete Collection'),
+                                content: Text('Delete "${collection.name}"?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, false);
+                                    },
+                                    child: const Text('Cancel'),
+                                  ),
+                                  FilledButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, true);
+                                    },
+                                    child: const Text('Delete'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+
+                          if (shouldDelete == true) {
+                            provider.deleteCollection(collection.id);
+                          }
                         },
-                        child: const Text('Delete'),
                       ),
                     ],
-                  );
-                },
-              );
+                  ),
 
-              if (shouldDelete == true) {
-                provider.deleteCollection(collection.id);
-              }
-            },
+                  const SizedBox(height: 16),
+
+                  Text(
+                    collection.name,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+
+                  const SizedBox(height: 6),
+
+                  Text(
+                    'Created ${collection.createdAt.day}/${collection.createdAt.month}/${collection.createdAt.year}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+
+                  const SizedBox(height: 18),
+
+                  Row(
+                    children: [
+                      Text(
+                        'Open Collection',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+
+                      const SizedBox(width: 4),
+
+                      const Icon(Icons.arrow_forward, size: 18),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
         );
       },

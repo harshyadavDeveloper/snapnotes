@@ -41,11 +41,9 @@ class _CameraScreenState extends State<CameraScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    return Scaffold(
-      body: provider.capturedImage != null
-          ? _buildPreview(provider)
-          : _buildCamera(provider),
-    );
+    return provider.capturedImage != null
+        ? _buildPreview(provider)
+        : _buildCamera(provider);
   }
 
   Widget _buildPreview(ScanNotifier provider) {
@@ -141,43 +139,181 @@ class _CameraScreenState extends State<CameraScreen> {
         CameraPreview(provider.cameraController!),
         const ScanOverlay(),
 
-        const Positioned(top: 40, left: 0, right: 0, child: ScanModeSelector()),
-
         Positioned(
-          bottom: 40,
+          top: 0,
           left: 0,
           right: 0,
-          child: Center(
-            child: FloatingActionButton(
-              onPressed: () async {
-                final image = await provider.captureImage();
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black45,
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
 
-                if (image == null) {
-                  return;
-                }
+                      const SizedBox(width: 12),
+                      Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.black45,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Text(
+                            'Align document within frame',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
 
-                if (!context.mounted) {
-                  return;
-                }
-
-                final croppedImage = await Navigator.push<File>(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => ImageCropScreen(image: image),
+                      // const Text(
+                      //   'Scan Document',
+                      //   style: TextStyle(
+                      //     color: Colors.white,
+                      //     fontSize: 18,
+                      //     fontWeight: FontWeight.w600,
+                      //   ),
+                      // ),
+                    ],
                   ),
-                );
 
-                if (croppedImage == null) {
-                  return;
-                }
+                  // const SizedBox(height: 16),
+                  // Positioned(
+                  //   bottom: 155,
+                  //   left: 0,
+                  //   right: 0,
+                  //   child: Center(
+                  //     child: Container(
+                  //       padding: const EdgeInsets.symmetric(
+                  //         horizontal: 16,
+                  //         vertical: 8,
+                  //       ),
+                  //       decoration: BoxDecoration(
+                  //         color: Colors.black45,
+                  //         borderRadius: BorderRadius.circular(20),
+                  //       ),
+                  //       child: const Text(
+                  //         'Align document within frame',
+                  //         style: TextStyle(
+                  //           color: Colors.white,
+                  //           fontWeight: FontWeight.w500,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: Colors.black45,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: const ScanModeSelector(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
 
-                provider.setCapturedImage(croppedImage);
-              },
-              child: const Icon(Icons.camera),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(24, 20, 24, 32),
+            decoration: BoxDecoration(
+              color: Colors.black.withValues(alpha: .65),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: .35),
+                  blurRadius: 24,
+                ),
+              ],
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(32),
+                topRight: Radius.circular(32),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildActionButton(
+                  icon: Icons.photo_library_outlined,
+                  label: 'Gallery',
+                  onTap: () {},
+                ),
+
+                _CaptureButton(
+                  onTap: () async {
+                    final image = await provider.captureImage();
+
+                    if (image == null) return;
+
+                    provider.setCapturedImage(image);
+                  },
+                ),
+
+                _buildActionButton(
+                  icon: Icons.flash_on_outlined,
+                  label: 'Flash',
+                  onTap: () {},
+                ),
+              ],
             ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildActionButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 56,
+            height: 56,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.white24),
+            ),
+            child: Icon(icon, color: Colors.white),
+          ),
+
+          const SizedBox(height: 8),
+
+          Text(label, style: const TextStyle(color: Colors.white)),
+        ],
+      ),
     );
   }
 
@@ -187,4 +323,70 @@ class _CameraScreenState extends State<CameraScreen> {
 
   //   super.dispose();
   // }
+}
+
+class _CaptureButton extends StatefulWidget {
+  final VoidCallback onTap;
+
+  const _CaptureButton({required this.onTap});
+
+  @override
+  State<_CaptureButton> createState() => _CaptureButtonState();
+}
+
+class _CaptureButtonState extends State<_CaptureButton> {
+  double _scale = 1;
+
+  Future<void> _handleTap() async {
+    setState(() {
+      _scale = 0.92;
+    });
+
+    await Future.delayed(const Duration(milliseconds: 80));
+
+    if (!mounted) return;
+
+    setState(() {
+      _scale = 1;
+    });
+
+    widget.onTap();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: _handleTap,
+      child: AnimatedScale(
+        scale: _scale,
+        duration: const Duration(milliseconds: 120),
+        curve: Curves.easeOut,
+        child: Container(
+          width: 90,
+          height: 90,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: const Color(0xFF14B8A6), width: 4),
+            boxShadow: const [
+              BoxShadow(
+                color: Color(0x5514B8A6),
+                blurRadius: 20,
+                spreadRadius: 2,
+              ),
+            ],
+          ),
+          child: Center(
+            child: Container(
+              width: 72,
+              height: 72,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

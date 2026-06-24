@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../../providers/navigation_provider.dart';
 import '../../collections/screens/collections_screen.dart';
 import '../../home/screens/home_screen.dart';
-import '../../scan/screens/scan_screen.dart';
 import '../../search/screens/search_screen.dart';
 import '../../settings/screens/settings_screen.dart';
 
@@ -18,11 +17,9 @@ class MainNavigationScreen extends StatelessWidget {
     final screens = [
       const HomeScreen(),
       const CollectionsScreen(),
-      const ScanScreen(),
       const SearchScreen(),
       const SettingsScreen(),
     ];
-
     return Scaffold(
       body: IndexedStack(
         index: navigationProvider.currentIndex,
@@ -44,11 +41,6 @@ class MainNavigationScreen extends StatelessWidget {
             icon: Icon(Icons.folder_outlined),
             selectedIcon: Icon(Icons.folder),
             label: 'Collections',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.camera_alt_outlined),
-            selectedIcon: Icon(Icons.camera_alt),
-            label: 'Scan',
           ),
           NavigationDestination(icon: Icon(Icons.search), label: 'Search'),
           NavigationDestination(

@@ -31,15 +31,81 @@ class ScanOverlay extends StatelessWidget {
 
     return IgnorePointer(
       child: Center(
-        child: Container(
-          width: width,
-          height: height,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.white, width: 3),
-            borderRadius: BorderRadius.circular(16),
+        child: CustomPaint(
+          painter: ScannerCornerPainter(
+            color: Theme.of(context).colorScheme.primary,
           ),
+          child: SizedBox(width: width, height: height),
         ),
       ),
     );
+  }
+}
+
+class ScannerCornerPainter extends CustomPainter {
+  final Color color;
+
+  ScannerCornerPainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    const cornerLength = 40.0;
+    const strokeWidth = 5.0;
+
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = strokeWidth
+      ..strokeCap = StrokeCap.round
+      ..style = PaintingStyle.stroke
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2);
+
+    // Top Left
+    canvas.drawLine(const Offset(0, 0), const Offset(cornerLength, 0), paint);
+
+    canvas.drawLine(const Offset(0, 0), const Offset(0, cornerLength), paint);
+
+    // Top Right
+    canvas.drawLine(
+      Offset(size.width, 0),
+      Offset(size.width - cornerLength, 0),
+      paint,
+    );
+
+    canvas.drawLine(
+      Offset(size.width, 0),
+      Offset(size.width, cornerLength),
+      paint,
+    );
+
+    // Bottom Left
+    canvas.drawLine(
+      Offset(0, size.height),
+      Offset(cornerLength, size.height),
+      paint,
+    );
+
+    canvas.drawLine(
+      Offset(0, size.height),
+      Offset(0, size.height - cornerLength),
+      paint,
+    );
+
+    // Bottom Right
+    canvas.drawLine(
+      Offset(size.width, size.height),
+      Offset(size.width - cornerLength, size.height),
+      paint,
+    );
+
+    canvas.drawLine(
+      Offset(size.width, size.height),
+      Offset(size.width, size.height - cornerLength),
+      paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant ScannerCornerPainter oldDelegate) {
+    return oldDelegate.color != color;
   }
 }

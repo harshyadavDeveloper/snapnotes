@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:snapnotes/features/favorites/screens/favorites_screen.dart';
 import 'package:snapnotes/features/notes/screens/create_note_screen.dart';
 import 'package:snapnotes/features/notes/screens/note_detail_screen.dart';
+import 'package:snapnotes/features/scan/screens/scan_screen.dart';
 import 'package:snapnotes/providers/dashboard_notifier.dart';
 import 'package:snapnotes/providers/navigation_provider.dart';
 
@@ -239,7 +240,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: 'Scan',
                         icon: Icons.camera_alt_outlined,
                         onTap: () {
-                          context.read<NavigationProvider>().changeIndex(2);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              fullscreenDialog: true,
+                              builder: (_) => const ScanScreen(),
+                            ),
+                          );
                         },
                       ),
 
