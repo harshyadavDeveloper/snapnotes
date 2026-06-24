@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:snapnotes/features/scan/domain/scan_mode.dart';
 
 import '../core/state/base_notifier.dart';
@@ -12,6 +13,8 @@ class ScanNotifier extends BaseNotifier {
   File? capturedImage;
 
   ScanMode selectedMode = ScanMode.document;
+
+  final ImagePicker _picker = ImagePicker();
 
   void changeMode(ScanMode mode) {
     selectedMode = mode;
@@ -59,6 +62,18 @@ class ScanNotifier extends BaseNotifier {
     notifyListeners();
   }
 
+  Future<File?> pickFromGallery() async {
+  final picked = await _picker.pickImage(
+    source: ImageSource.gallery,
+  );
+
+  if (picked == null) {
+    return null;
+  }
+
+  return File(picked.path);
+}
+
   Future<void> disposeCamera() async {
     await cameraController?.dispose();
 
@@ -66,6 +81,7 @@ class ScanNotifier extends BaseNotifier {
 
     notifyListeners();
   }
+
 
   @override
   void dispose() {

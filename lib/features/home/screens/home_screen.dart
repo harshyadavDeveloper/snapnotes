@@ -172,9 +172,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 foregroundColor: const Color(0xFF0F766E),
                               ),
                               onPressed: () {
-                                context.read<NavigationProvider>().changeIndex(
-                                  2,
-                                );
+                                  Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              fullscreenDialog: true,
+                              builder: (_) => const ScanScreen(),
+                            ),
+                          );
                               },
                               icon: const Icon(Icons.camera_alt_outlined),
                               label: const Text('Scan Now'),

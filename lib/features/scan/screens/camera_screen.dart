@@ -262,7 +262,14 @@ class _CameraScreenState extends State<CameraScreen> {
                 _buildActionButton(
                   icon: Icons.photo_library_outlined,
                   label: 'Gallery',
-                  onTap: () {},
+                  onTap: () async {
+                    // print('clickkk');
+                    final image = await provider.pickFromGallery();
+
+                    if (image == null) return;
+
+                    provider.setCapturedImage(image);
+                  },
                 ),
 
                 _CaptureButton(
