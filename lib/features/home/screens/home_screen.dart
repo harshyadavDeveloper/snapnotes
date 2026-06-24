@@ -71,7 +71,23 @@ class _HomeScreenState extends State<HomeScreen> {
     final dashboardProvider = context.watch<DashboardNotifier>();
     debugPrint('Recent Notes Count: ${dashboardProvider.recentNotes.length}');
     return Scaffold(
-      appBar: AppBar(title: const Text('SnapNotes')),
+      appBar: AppBar(
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'SnapNotes',
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+            ),
+            Text(
+              'Offline OCR Notes',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -84,25 +100,85 @@ class _HomeScreenState extends State<HomeScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        _greeting(),
-                        style: Theme.of(context).textTheme.headlineMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(24),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(28),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? [
+                                    const Color(0xFF134E4A),
+                                    const Color(0xFF0F172A),
+                                  ]
+                                : [
+                                    const Color(0xFF14B8A6),
+                                    const Color(0xFF06B6D4),
+                                  ],
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _greeting(),
+                              style: Theme.of(context).textTheme.headlineSmall
+                                  ?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
 
-                      const SizedBox(height: 8),
+                            const SizedBox(height: 12),
 
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 400),
-                        child: Text(
-                          _messages[_currentMessageIndex],
-                          key: ValueKey(_currentMessageIndex),
-                          style: Theme.of(context).textTheme.bodyLarge
-                              ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 900),
+                              switchInCurve: Curves.easeOutCubic,
+                              switchOutCurve: Curves.easeInCubic,
+                              transitionBuilder: (child, animation) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: SlideTransition(
+                                    position: Tween<Offset>(
+                                      begin: const Offset(0, .3),
+                                      end: Offset.zero,
+                                    ).animate(animation),
+                                    child: child,
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                _messages[_currentMessageIndex],
+                                key: ValueKey(_currentMessageIndex),
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(
+                                      color: Colors.white.withValues(
+                                        alpha: .95,
+                                      ),
+                                      height: 1.4,
+                                    ),
                               ),
+                            ),
+
+                            const SizedBox(height: 20),
+
+                            FilledButton.icon(
+                              style: FilledButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: const Color(0xFF0F766E),
+                              ),
+                              onPressed: () {
+                                context.read<NavigationProvider>().changeIndex(
+                                  2,
+                                );
+                              },
+                              icon: const Icon(Icons.camera_alt_outlined),
+                              label: const Text('Scan Now'),
+                            ),
+                          ],
                         ),
                       ),
                     ],
