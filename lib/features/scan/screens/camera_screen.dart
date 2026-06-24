@@ -54,24 +54,21 @@ class _CameraScreenState extends State<CameraScreen> {
         Positioned.fill(
           child: Image.file(provider.capturedImage!, fit: BoxFit.cover),
         ),
-           Positioned(
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: Container(
-        height: 120,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            colors: [
-              Colors.black54,
-              Colors.transparent,
-            ],
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Container(
+            height: 120,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [Colors.black54, Colors.transparent],
+              ),
+            ),
           ),
         ),
-      ),
-    ),
 
         Positioned(
           bottom: 30,

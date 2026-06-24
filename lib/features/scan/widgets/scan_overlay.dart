@@ -26,8 +26,7 @@ class ScanOverlay extends StatelessWidget {
         break;
 
       case ScanMode.photo:
-         return const SizedBox.shrink();
-       
+        return const SizedBox.shrink();
     }
 
     return IgnorePointer(
