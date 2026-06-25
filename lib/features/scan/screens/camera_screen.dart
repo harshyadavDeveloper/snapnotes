@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snapnotes/features/ocr/screens/ocr_loading_screen.dart';
 import 'package:snapnotes/features/ocr/screens/ocr_result_screen.dart';
 import 'package:snapnotes/features/scan/screens/image_crop_screen.dart';
 import 'package:snapnotes/features/scan/widgets/scan_mode_selector.dart';
@@ -72,19 +73,16 @@ class _CameraScreenState extends State<CameraScreen> {
           bottom: 30,
           left: 20,
           right: 20,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 8,
+            runSpacing: 8,
             children: [
-              /// Retake
               FilledButton.icon(
-                onPressed: () {
-                  provider.retakeImage();
-                },
+                onPressed: provider.retakeImage,
                 icon: const Icon(Icons.refresh),
                 label: const Text('Retake'),
               ),
-
-              /// Crop
               FilledButton.icon(
                 onPressed: () async {
                   final croppedFile = await Navigator.push<File>(
@@ -94,27 +92,28 @@ class _CameraScreenState extends State<CameraScreen> {
                           ImageCropScreen(image: provider.capturedImage!),
                     ),
                   );
-
                   if (croppedFile == null) {
                     return;
                   }
-
                   provider.setCapturedImage(croppedFile);
                 },
                 icon: const Icon(Icons.crop),
                 label: const Text('Crop'),
               ),
-
-              /// OCR
               FilledButton.icon(
                 onPressed: () async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const OcrLoadingScreen()),
+                  );
+
                   final ocrNotifier = context.read<OcrNotifier>();
 
                   await ocrNotifier.recognizeText(provider.capturedImage!);
 
-                  if (!mounted) return;
+                  if (!context.mounted) return;
 
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (_) => OcrResultScreen(

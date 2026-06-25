@@ -63,12 +63,119 @@ class _OcrResultScreenState extends State<OcrResultScreen> {
     Navigator.popUntil(context, (route) => route.isFirst);
   }
 
+  Future<void> _showSaveDialog() async {
+    final collections = context.read<CollectionNotifier>().collections;
+
+    int? selectedCollectionId;
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Save as Note'),
+
+              content: DropdownButtonFormField<int>(
+                value: selectedCollectionId,
+                hint: const Text('Select Collection'),
+
+                items: collections
+                    .map(
+                      (collection) => DropdownMenuItem(
+                        value: collection.id,
+                        child: Text(collection.name),
+                      ),
+                    )
+                    .toList(),
+
+                onChanged: (value) {
+                  setState(() {
+                    selectedCollectionId = value;
+                  });
+                },
+              ),
+
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+
+                FilledButton(
+                  onPressed: () async {
+                    if (selectedCollectionId == null) {
+                      return;
+                    }
+
+                    await _saveAsNote(selectedCollectionId!);
+
+                    if (!context.mounted) return;
+
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Save'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> _saveAsNote(int collectionId) async {
+    final text = _contentController.text.trim();
+
+    if (text.isEmpty) {
+      return;
+    }
+
+    String title;
+
+    final lines = text.split('\n');
+
+    title = lines.first.trim();
+
+    if (title.isEmpty) {
+      title = 'Scanned Note';
+    }
+
+    if (title.length > 40) {
+      title = title.substring(0, 40);
+    }
+
+    await context.read<NoteNotifier>().createNote(
+      title: title,
+      content: text,
+      collectionId: collectionId,
+    );
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('OCR note saved successfully')),
+    );
+
+    Navigator.popUntil(context, (route) => route.isFirst);
+  }
+
   @override
   Widget build(BuildContext context) {
     final collectionProvider = context.watch<CollectionNotifier>();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Review OCR Result')),
+      appBar: AppBar(
+        title: const Text('OCR Result'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save_outlined),
+            onPressed: _showSaveDialog,
+          ),
+        ],
+      ),
 
       body: Padding(
         padding: const EdgeInsets.all(16),
