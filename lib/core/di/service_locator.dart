@@ -25,7 +25,7 @@ import '../../domain/usecases/collections/get_collections_usecase.dart';
 final getIt = GetIt.instance;
 
 Future<void> setupDependencies() async {
-  getIt.registerLazySingleton(() => CollectionLocalDataSource());
+  getIt.registerLazySingleton(CollectionLocalDataSource.new);
 
   getIt.registerLazySingleton<CollectionRepository>(
     () => CollectionRepositoryImpl(getIt()),
@@ -38,7 +38,7 @@ Future<void> setupDependencies() async {
   getIt.registerLazySingleton(() => DeleteCollectionUseCase(getIt()));
 
   // DataSource
-  getIt.registerLazySingleton(() => NoteLocalDataSource());
+  getIt.registerLazySingleton(NoteLocalDataSource.new);
 
   // Repository
   getIt.registerLazySingleton<NoteRepository>(
@@ -68,5 +68,5 @@ Future<void> setupDependencies() async {
 
   getIt.registerLazySingleton(() => ToggleFavoriteUseCase(getIt()));
 
-  getIt.registerLazySingleton(() => PdfService());
+  getIt.registerLazySingleton(PdfService.new);
 }

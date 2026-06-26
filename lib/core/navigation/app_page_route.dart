@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 class AppPageRoute<T> extends PageRouteBuilder<T> {
-  final Widget page;
-
   AppPageRoute({required this.page})
     : super(
         transitionDuration: const Duration(milliseconds: 250),
@@ -27,4 +25,5 @@ class AppPageRoute<T> extends PageRouteBuilder<T> {
           );
         },
       );
+  final Widget page;
 }

@@ -10,10 +10,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
 
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.primary,
-        brightness: Brightness.light,
-      ),
+      colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
 
       scaffoldBackgroundColor: AppColors.background,
 

@@ -4,9 +4,8 @@ import 'package:provider/provider.dart';
 import '../../../providers/note_notifier.dart';
 
 class NoteEditorScreen extends StatefulWidget {
-  final int collectionId;
-
   const NoteEditorScreen({super.key, required this.collectionId});
+  final int collectionId;
 
   @override
   State<NoteEditorScreen> createState() => _NoteEditorScreenState();
@@ -150,7 +149,6 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
                     controller: _contentController,
                     expands: true,
                     maxLines: null,
-                    minLines: null,
                     textCapitalization: TextCapitalization.sentences,
                     style: Theme.of(context).textTheme.bodyLarge,
                     decoration: const InputDecoration(

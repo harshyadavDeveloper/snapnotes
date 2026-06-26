@@ -233,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 24),
 
                   /// Quick Actions Header
-                  AppSectionHeader(title: 'Quick Actions'),
+                  const AppSectionHeader(title: 'Quick Actions'),
 
                   const SizedBox(height: 12),
 

@@ -186,10 +186,10 @@ class _SearchScreenState extends State<SearchScreen> {
 
             const SizedBox(height: 24),
 
-            Wrap(
+            const Wrap(
               spacing: 8,
               runSpacing: 8,
-              children: const [
+              children: [
                 Chip(label: Text('Flutter')),
                 Chip(label: Text('Meeting')),
                 Chip(label: Text('Invoice')),

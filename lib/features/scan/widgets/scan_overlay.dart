@@ -55,9 +55,8 @@ class ScanOverlay extends StatelessWidget {
 }
 
 class ScannerCornerPainter extends CustomPainter {
-  final Color color;
-
   ScannerCornerPainter({required this.color});
+  final Color color;
 
   @override
   void paint(Canvas canvas, Size size) {

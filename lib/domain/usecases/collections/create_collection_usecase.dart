@@ -2,9 +2,8 @@ import '../../../data/models/collection_model.dart';
 import '../../repositories/collection_repository.dart';
 
 class CreateCollectionUseCase {
-  final CollectionRepository _repository;
-
   CreateCollectionUseCase(this._repository);
+  final CollectionRepository _repository;
 
   Future<void> call(String name) async {
     final collection = CollectionModel()

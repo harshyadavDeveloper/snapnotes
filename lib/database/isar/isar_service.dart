@@ -16,16 +16,12 @@ class IsarService {
 
     final dir = await getApplicationDocumentsDirectory();
 
-    _isar = await Isar.open(
-      [
-        CollectionModelSchema,
-        NoteModelSchema,
-        ScanModelSchema,
-        SettingsModelSchema,
-      ],
-      directory: dir.path,
-      inspector: true,
-    );
+    _isar = await Isar.open([
+      CollectionModelSchema,
+      NoteModelSchema,
+      ScanModelSchema,
+      SettingsModelSchema,
+    ], directory: dir.path);
 
     return _isar!;
   }

@@ -7,17 +7,16 @@ import '../domain/usecases/collections/delete_collection_usecase.dart';
 import '../domain/usecases/collections/get_collections_usecase.dart';
 
 class CollectionNotifier extends BaseNotifier {
-  final GetCollectionsUseCase _getCollectionsUseCase;
-  final CreateCollectionUseCase _createCollectionUseCase;
-  final DeleteCollectionUseCase _deleteCollectionUseCase;
-  final DashboardNotifier _dashboardNotifier;
-
   CollectionNotifier(
     this._getCollectionsUseCase,
     this._createCollectionUseCase,
     this._deleteCollectionUseCase,
     this._dashboardNotifier,
   );
+  final GetCollectionsUseCase _getCollectionsUseCase;
+  final CreateCollectionUseCase _createCollectionUseCase;
+  final DeleteCollectionUseCase _deleteCollectionUseCase;
+  final DashboardNotifier _dashboardNotifier;
 
   List<CollectionModel> collections = [];
 

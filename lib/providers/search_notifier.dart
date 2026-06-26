@@ -6,10 +6,9 @@ import '../data/models/note_model.dart';
 import '../domain/usecases/search/search_notes_usecase.dart';
 
 class SearchNotifier extends BaseNotifier {
+  SearchNotifier(this._searchNotesUseCase);
   final SearchNotesUseCase _searchNotesUseCase;
   Timer? _debounce;
-
-  SearchNotifier(this._searchNotesUseCase);
 
   String query = '';
 

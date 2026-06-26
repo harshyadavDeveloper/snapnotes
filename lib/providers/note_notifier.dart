@@ -11,15 +11,6 @@ import '../domain/usecases/notes/get_notes_by_collection_usecase.dart';
 import '../domain/usecases/notes/get_notes_usecase.dart';
 
 class NoteNotifier extends BaseNotifier {
-  final GetNotesUseCase _getNotesUseCase;
-  final GetNotesByCollectionUseCase _getNotesByCollectionUseCase;
-  final CreateNoteUseCase _createNoteUseCase;
-  final DeleteNoteUseCase _deleteNoteUseCase;
-  final DashboardNotifier _dashboardNotifier;
-  final UpdateNoteUseCase _updateNoteUseCase;
-  final GetNoteByIdUseCase _getNoteByIdUseCase;
-  final ToggleFavoriteUseCase _toggleFavoriteUseCase;
-
   NoteNotifier(
     this._getNotesUseCase,
     this._getNotesByCollectionUseCase,
@@ -30,6 +21,14 @@ class NoteNotifier extends BaseNotifier {
     this._getNoteByIdUseCase,
     this._toggleFavoriteUseCase,
   );
+  final GetNotesUseCase _getNotesUseCase;
+  final GetNotesByCollectionUseCase _getNotesByCollectionUseCase;
+  final CreateNoteUseCase _createNoteUseCase;
+  final DeleteNoteUseCase _deleteNoteUseCase;
+  final DashboardNotifier _dashboardNotifier;
+  final UpdateNoteUseCase _updateNoteUseCase;
+  final GetNoteByIdUseCase _getNoteByIdUseCase;
+  final ToggleFavoriteUseCase _toggleFavoriteUseCase;
 
   List<NoteModel> notes = [];
 

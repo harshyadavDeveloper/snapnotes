@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snapnotes/core/navigation/my_navigator.dart';
 import 'package:snapnotes/features/ocr/screens/ocr_loading_screen.dart';
 import 'package:snapnotes/features/ocr/screens/ocr_result_screen.dart';
 import 'package:snapnotes/features/scan/screens/image_crop_screen.dart';
@@ -102,19 +103,15 @@ class _CameraScreenState extends State<CameraScreen> {
               ),
               FilledButton.icon(
                 onPressed: () async {
-                  Navigator.push(
+                  final ocrNotifier = context.read<OcrNotifier>();
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(builder: (_) => const OcrLoadingScreen()),
                   );
 
-                  final ocrNotifier = context.read<OcrNotifier>();
-
                   await ocrNotifier.recognizeText(provider.capturedImage!);
 
-                  if (!context.mounted) return;
-
-                  Navigator.pushReplacement(
-                    context,
+                  await MyNavigator.pushReplacement(
                     MaterialPageRoute(
                       builder: (_) => OcrResultScreen(
                         extractedText: ocrNotifier.extractedText,
@@ -334,9 +331,8 @@ class _CameraScreenState extends State<CameraScreen> {
 }
 
 class _CaptureButton extends StatefulWidget {
-  final VoidCallback onTap;
-
   const _CaptureButton({required this.onTap});
+  final VoidCallback onTap;
 
   @override
   State<_CaptureButton> createState() => _CaptureButtonState();

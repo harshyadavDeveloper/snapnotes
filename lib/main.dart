@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapnotes/core/di/service_locator.dart';
+import 'package:snapnotes/core/navigation/my_navigator.dart';
 import 'package:snapnotes/providers/app_info_provider.dart';
 import 'package:snapnotes/providers/collection_provider.dart';
 import 'package:snapnotes/providers/dashboard_notifier.dart';
@@ -78,6 +79,7 @@ class _AppView extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      navigatorKey: MyNavigator.navigatorKey,
       title: 'SnapNotes',
       theme: AppTheme.lightTheme(),
       darkTheme: AppTheme.darkTheme(),

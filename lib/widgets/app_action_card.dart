@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AppActionCard extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final VoidCallback onTap;
-
   const AppActionCard({
     super.key,
     required this.title,
     required this.icon,
     required this.onTap,
   });
+  final String title;
+  final IconData icon;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {

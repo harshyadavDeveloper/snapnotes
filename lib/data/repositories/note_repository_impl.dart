@@ -3,9 +3,8 @@ import '../datasources/local/note_local_datasource.dart';
 import '../models/note_model.dart';
 
 class NoteRepositoryImpl implements NoteRepository {
-  final NoteLocalDataSource _localDatasource;
-
   NoteRepositoryImpl(this._localDatasource);
+  final NoteLocalDataSource _localDatasource;
 
   @override
   Future<List<NoteModel>> getNotes() {

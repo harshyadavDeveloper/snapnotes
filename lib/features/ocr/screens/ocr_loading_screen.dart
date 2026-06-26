@@ -5,7 +5,7 @@ class OcrLoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -14,9 +14,7 @@ class OcrLoadingScreen extends StatelessWidget {
 
             SizedBox(height: 24),
 
-            Text(
-              'Extracting text...',
-            ),
+            Text('Extracting text...'),
           ],
         ),
       ),

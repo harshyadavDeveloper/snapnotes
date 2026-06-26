@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import '../../../data/models/note_model.dart';
 
 class NoteCard extends StatelessWidget {
+  const NoteCard({super.key, required this.note, this.onTap, this.onDelete});
   final NoteModel note;
   final VoidCallback? onTap;
   final VoidCallback? onDelete;
-
-  const NoteCard({super.key, required this.note, this.onTap, this.onDelete});
 
   @override
   Widget build(BuildContext context) {

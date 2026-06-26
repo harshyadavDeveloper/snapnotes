@@ -2,9 +2,8 @@ import '../../../data/models/note_model.dart';
 import '../../repositories/note_repository.dart';
 
 class CreateNoteUseCase {
-  final NoteRepository _repository;
-
   CreateNoteUseCase(this._repository);
+  final NoteRepository _repository;
 
   Future<void> call({
     required String title,

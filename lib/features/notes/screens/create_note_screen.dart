@@ -198,7 +198,6 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                     controller: _contentController,
                     expands: true,
                     maxLines: null,
-                    minLines: null,
                     textCapitalization: TextCapitalization.sentences,
                     style: Theme.of(context).textTheme.bodyLarge,
                     decoration: const InputDecoration(

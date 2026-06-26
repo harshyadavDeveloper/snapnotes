@@ -183,7 +183,7 @@ class _CollectionsScreenState extends State<CollectionsScreen> {
                           );
 
                           if (shouldDelete == true) {
-                            provider.deleteCollection(collection.id);
+                            await provider.deleteCollection(collection.id);
                           }
                         },
                       ),

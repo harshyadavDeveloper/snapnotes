@@ -5,9 +5,8 @@ import 'package:crop_your_image/crop_your_image.dart';
 import 'package:flutter/material.dart';
 
 class ImageCropScreen extends StatefulWidget {
-  final File image;
-
   const ImageCropScreen({super.key, required this.image});
+  final File image;
 
   @override
   State<ImageCropScreen> createState() => _ImageCropScreenState();
@@ -92,7 +91,6 @@ class _ImageCropScreenState extends State<ImageCropScreen> {
               image: _imageData!,
               controller: _cropController,
               onCropped: _onCropped,
-              withCircleUi: false,
               interactive: true,
               // initialSize: 0.9,
               baseColor: Colors.black,

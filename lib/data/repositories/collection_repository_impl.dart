@@ -3,9 +3,8 @@ import '../datasources/local/collection_local_datasource.dart';
 import '../models/collection_model.dart';
 
 class CollectionRepositoryImpl implements CollectionRepository {
-  final CollectionLocalDataSource _localDataSource;
-
   CollectionRepositoryImpl(this._localDataSource);
+  final CollectionLocalDataSource _localDataSource;
 
   @override
   Future<List<CollectionModel>> getCollections() {

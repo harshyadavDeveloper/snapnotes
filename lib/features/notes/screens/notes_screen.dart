@@ -8,14 +8,13 @@ import '../../../widgets/app_loading_view.dart';
 import 'note_editor_screen.dart';
 
 class NotesScreen extends StatefulWidget {
-  final int collectionId;
-  final String collectionName;
-
   const NotesScreen({
     super.key,
     required this.collectionId,
     required this.collectionName,
   });
+  final int collectionId;
+  final String collectionName;
 
   @override
   State<NotesScreen> createState() => _NotesScreenState();

@@ -3,15 +3,15 @@ import 'package:open_filex/open_filex.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:snapnotes/core/di/service_locator.dart';
+import 'package:snapnotes/core/navigation/my_navigator.dart';
 import 'package:snapnotes/core/services/pdf_service.dart';
 
 import '../../../data/models/note_model.dart';
 import '../../../providers/note_notifier.dart';
 
 class NoteDetailScreen extends StatefulWidget {
-  final NoteModel note;
-
   const NoteDetailScreen({super.key, required this.note});
+  final NoteModel note;
 
   @override
   State<NoteDetailScreen> createState() => _NoteDetailScreenState();
@@ -95,11 +95,10 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
       return;
     }
 
+    if (!mounted) return;
     await context.read<NoteNotifier>().deleteNote(widget.note.id);
 
-    if (!mounted) return;
-
-    Navigator.pop(context);
+    MyNavigator.pop();
   }
 
   Future<void> _exportPdf() async {
@@ -187,7 +186,6 @@ class _NoteDetailScreenState extends State<NoteDetailScreen> {
               child: TextField(
                 controller: _contentController,
                 expands: true,
-                minLines: null,
                 maxLines: null,
                 textAlignVertical: TextAlignVertical.top,
                 decoration: const InputDecoration(

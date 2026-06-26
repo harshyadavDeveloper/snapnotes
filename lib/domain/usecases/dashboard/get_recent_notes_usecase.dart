@@ -2,9 +2,8 @@ import '../../../data/models/note_model.dart';
 import '../../repositories/note_repository.dart';
 
 class GetRecentNotesUseCase {
-  final NoteRepository _repository;
-
   GetRecentNotesUseCase(this._repository);
+  final NoteRepository _repository;
 
   Future<List<NoteModel>> call() async {
     final notes = await _repository.getNotes();

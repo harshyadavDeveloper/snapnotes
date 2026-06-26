@@ -4,9 +4,8 @@ import 'package:snapnotes/providers/collection_provider.dart';
 import '../../../providers/note_notifier.dart';
 
 class OcrResultScreen extends StatefulWidget {
-  final String extractedText;
-
   const OcrResultScreen({super.key, required this.extractedText});
+  final String extractedText;
 
   @override
   State<OcrResultScreen> createState() => _OcrResultScreenState();
@@ -77,7 +76,7 @@ class _OcrResultScreenState extends State<OcrResultScreen> {
               title: const Text('Save as Note'),
 
               content: DropdownButtonFormField<int>(
-                value: selectedCollectionId,
+                initialValue: selectedCollectionId,
                 hint: const Text('Select Collection'),
 
                 items: collections
@@ -192,7 +191,7 @@ class _OcrResultScreenState extends State<OcrResultScreen> {
             const SizedBox(height: 16),
 
             DropdownButtonFormField<int>(
-              value: selectedCollectionId,
+              initialValue: selectedCollectionId,
               decoration: const InputDecoration(
                 labelText: 'Collection',
                 border: OutlineInputBorder(),
@@ -219,7 +218,6 @@ class _OcrResultScreenState extends State<OcrResultScreen> {
                 controller: _contentController,
                 expands: true,
                 maxLines: null,
-                minLines: null,
                 textAlignVertical: TextAlignVertical.top,
                 decoration: const InputDecoration(
                   labelText: 'Extracted Text',

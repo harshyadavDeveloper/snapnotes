@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:snapnotes/core/navigation/my_navigator.dart';
 
 import '../../../providers/collection_provider.dart';
 
@@ -49,7 +50,7 @@ class _CreateCollectionBottomSheetState
               );
 
               if (mounted) {
-                Navigator.pop(context);
+                MyNavigator.pop();
               }
             },
             child: const Text('Create'),

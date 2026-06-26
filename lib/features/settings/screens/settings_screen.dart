@@ -98,11 +98,11 @@ class SettingsScreen extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          _SettingsCard(
+          const _SettingsCard(
             child: ListTile(
-              leading: const Icon(Icons.privacy_tip_outlined),
-              title: const Text('Privacy'),
-              subtitle: const Text('Everything stays on your device'),
+              leading: Icon(Icons.privacy_tip_outlined),
+              title: Text('Privacy'),
+              subtitle: Text('Everything stays on your device'),
             ),
           ),
 
@@ -121,9 +121,8 @@ class SettingsScreen extends StatelessWidget {
 }
 
 class _SettingsCard extends StatelessWidget {
-  final Widget child;
-
   const _SettingsCard({required this.child});
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
