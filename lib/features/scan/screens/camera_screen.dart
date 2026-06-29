@@ -6,11 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:snapnotes/core/navigation/my_navigator.dart';
 import 'package:snapnotes/features/ocr/screens/ocr_loading_screen.dart';
 import 'package:snapnotes/features/ocr/screens/ocr_result_screen.dart';
+import 'package:snapnotes/features/scan/domain/scan_mode.dart';
 import 'package:snapnotes/features/scan/screens/image_crop_screen.dart';
 import 'package:snapnotes/features/scan/widgets/scan_mode_selector.dart';
 import 'package:snapnotes/features/scan/widgets/scan_overlay.dart';
 import 'package:snapnotes/providers/ocr_notifier.dart';
-
 import '../../../providers/scan_notifier.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -26,10 +26,8 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scanNotifier = context.read<ScanNotifier>();
-
       _scanNotifier.initializeCamera();
     });
   }
@@ -40,20 +38,25 @@ class _CameraScreenState extends State<CameraScreen> {
 
     if (provider.cameraController == null ||
         !provider.cameraController!.value.isInitialized) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return const Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(child: CircularProgressIndicator()),
+      );
     }
 
-    return provider.capturedImage != null
-        ? _buildPreview(provider)
-        : _buildCamera(provider);
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: provider.capturedImage != null
+          ? _buildPreview(provider)
+          : _buildCamera(provider),
+    );
   }
 
   Widget _buildPreview(ScanNotifier provider) {
     return Stack(
+      fit: StackFit.expand,
       children: [
-        Positioned.fill(
-          child: Image.file(provider.capturedImage!, fit: BoxFit.cover),
-        ),
+        Image.file(provider.capturedImage!, fit: BoxFit.cover),
         Positioned(
           bottom: 0,
           left: 0,
@@ -69,7 +72,6 @@ class _CameraScreenState extends State<CameraScreen> {
             ),
           ),
         ),
-
         Positioned(
           bottom: 30,
           left: 20,
@@ -93,9 +95,7 @@ class _CameraScreenState extends State<CameraScreen> {
                           ImageCropScreen(image: provider.capturedImage!),
                     ),
                   );
-                  if (croppedFile == null) {
-                    return;
-                  }
+                  if (croppedFile == null) return;
                   provider.setCapturedImage(croppedFile);
                 },
                 icon: const Icon(Icons.crop),
@@ -106,11 +106,10 @@ class _CameraScreenState extends State<CameraScreen> {
                   final ocrNotifier = context.read<OcrNotifier>();
                   await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const OcrLoadingScreen()),
+                    MaterialPageRoute(
+                        builder: (_) => const OcrLoadingScreen()),
                   );
-
                   await ocrNotifier.recognizeText(provider.capturedImage!);
-
                   await MyNavigator.pushReplacement(
                     MaterialPageRoute(
                       builder: (_) => OcrResultScreen(
@@ -131,18 +130,27 @@ class _CameraScreenState extends State<CameraScreen> {
 
   Widget _buildCamera(ScanNotifier provider) {
     return Stack(
+      fit: StackFit.expand,
       children: [
-        CameraPreview(provider.cameraController!),
+        // Camera preview fills entire screen
+        Positioned.fill(
+          child: CameraPreview(provider.cameraController!),
+        ),
+
+        // Scan overlay (returns SizedBox.shrink for photo mode — that's fine)
         const ScanOverlay(),
 
+        // Top bar
         Positioned(
           top: 0,
           left: 0,
           right: 0,
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -152,80 +160,45 @@ class _CameraScreenState extends State<CameraScreen> {
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: IconButton(
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
+                          icon: const Icon(Icons.arrow_back,
+                              color: Colors.white),
+                          onPressed: () => Navigator.pop(context),
                         ),
                       ),
-
                       const SizedBox(width: 12),
-                      Center(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.black45,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Text(
-                            'Align document within frame',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
+                      Expanded(
+                        child: Center(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: Colors.black45,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              provider.selectedMode == ScanMode.photo
+                                  ? 'Take a photo'
+                                  : 'Align document within frame',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),
                       ),
-
-                      // const Text(
-                      //   'Scan Document',
-                      //   style: TextStyle(
-                      //     color: Colors.white,
-                      //     fontSize: 18,
-                      //     fontWeight: FontWeight.w600,
-                      //   ),
-                      // ),
                     ],
                   ),
-
-                  // const SizedBox(height: 16),
-                  // Positioned(
-                  //   bottom: 155,
-                  //   left: 0,
-                  //   right: 0,
-                  //   child: Center(
-                  //     child: Container(
-                  //       padding: const EdgeInsets.symmetric(
-                  //         horizontal: 16,
-                  //         vertical: 8,
-                  //       ),
-                  //       decoration: BoxDecoration(
-                  //         color: Colors.black45,
-                  //         borderRadius: BorderRadius.circular(20),
-                  //       ),
-                  //       child: const Text(
-                  //         'Align document within frame',
-                  //         style: TextStyle(
-                  //           color: Colors.white,
-                  //           fontWeight: FontWeight.w500,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  Container(
-                    padding: const EdgeInsets.all(6),
-                    decoration: BoxDecoration(
-                      color: Colors.black45,
-                      borderRadius: BorderRadius.circular(30),
+                  const SizedBox(height: 8),
+                  Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.black45,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: const ScanModeSelector(),
                     ),
-                    child: const ScanModeSelector(),
                   ),
                 ],
               ),
@@ -233,6 +206,7 @@ class _CameraScreenState extends State<CameraScreen> {
           ),
         ),
 
+        // Bottom controls
         Positioned(
           bottom: 0,
           left: 0,
@@ -259,31 +233,24 @@ class _CameraScreenState extends State<CameraScreen> {
                   icon: Icons.photo_library_outlined,
                   label: 'Gallery',
                   onTap: () async {
-                    // print('clickkk');
                     final image = await provider.pickFromGallery();
-
                     if (image == null) return;
-
                     provider.setCapturedImage(image);
                   },
                 ),
-
                 _CaptureButton(
                   onTap: () async {
                     final image = await provider.captureImage();
-
                     if (image == null) return;
-
                     provider.setCapturedImage(image);
                   },
                 ),
-
                 _buildActionButton(
-                  icon: provider.isFlashOn ? Icons.flash_on : Icons.flash_off,
+                  icon: provider.isFlashOn
+                      ? Icons.flash_on
+                      : Icons.flash_off,
                   label: provider.isFlashOn ? 'Flash On' : 'Flash Off',
-                  onTap: () {
-                    provider.toggleFlash();
-                  },
+                  onTap: () => provider.toggleFlash(),
                 ),
               ],
             ),
@@ -313,21 +280,12 @@ class _CameraScreenState extends State<CameraScreen> {
             ),
             child: Icon(icon, color: Colors.white),
           ),
-
           const SizedBox(height: 8),
-
           Text(label, style: const TextStyle(color: Colors.white)),
         ],
       ),
     );
   }
-
-  // @override
-  // void dispose() {
-  //   _scanNotifier.disposeCamera();
-
-  //   super.dispose();
-  // }
 }
 
 class _CaptureButton extends StatefulWidget {
@@ -342,18 +300,10 @@ class _CaptureButtonState extends State<_CaptureButton> {
   double _scale = 1;
 
   Future<void> _handleTap() async {
-    setState(() {
-      _scale = 0.92;
-    });
-
+    setState(() => _scale = 0.92);
     await Future.delayed(const Duration(milliseconds: 80));
-
     if (!mounted) return;
-
-    setState(() {
-      _scale = 1;
-    });
-
+    setState(() => _scale = 1);
     widget.onTap();
   }
 
@@ -370,7 +320,8 @@ class _CaptureButtonState extends State<_CaptureButton> {
           height: 90,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xFF14B8A6), width: 4),
+            border:
+                Border.all(color: const Color(0xFF14B8A6), width: 4),
             boxShadow: const [
               BoxShadow(
                 color: Color(0x5514B8A6),
