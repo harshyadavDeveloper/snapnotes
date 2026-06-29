@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:snapnotes/providers/app_info_provider.dart';
+import 'package:snapnotes/providers/dashboard_notifier.dart';
 
 import '../../../providers/theme_provider.dart';
 
@@ -11,6 +12,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = context.watch<ThemeProvider>();
     final appInfo = context.watch<AppInfoProvider>();
+    final dashboard = context.watch<DashboardNotifier>();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
@@ -87,14 +89,59 @@ class SettingsScreen extends StatelessWidget {
           const SizedBox(height: 16),
 
           _SettingsCard(
-            child: ListTile(
-              leading: const Icon(Icons.storage_outlined),
-              title: const Text('Storage'),
-              subtitle: const Text('Manage local notes and OCR data'),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {},
+  child: Column(
+    children: [
+      const SizedBox(height: 16),
+
+      Row(
+        children: [
+          Icon(
+            Icons.storage_outlined,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+
+          const SizedBox(width: 12),
+
+          Text(
+            'Storage Statistics',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w700,
             ),
           ),
+        ],
+      ),
+
+      const SizedBox(height: 20),
+
+      _buildStatRow(
+        context,
+        Icons.note_alt_outlined,
+        'Notes',
+        dashboard.totalNotes.toString(),
+      ),
+
+      const SizedBox(height: 12),
+
+      _buildStatRow(
+        context,
+        Icons.folder_outlined,
+        'Collections',
+        dashboard.totalCollections.toString(),
+      ),
+
+      const SizedBox(height: 12),
+
+      _buildStatRow(
+        context,
+        Icons.star_outline,
+        'Favorites',
+        dashboard.totalFavorites.toString(),
+      ),
+
+      const SizedBox(height: 16),
+    ],
+  ),
+),
 
           const SizedBox(height: 16),
 
@@ -126,6 +173,7 @@ class _SettingsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
@@ -138,4 +186,34 @@ class _SettingsCard extends StatelessWidget {
       child: child,
     );
   }
+}
+
+Widget _buildStatRow(
+  BuildContext context,
+  IconData icon,
+  String title,
+  String value,
+) {
+  return Row(
+    children: [
+      Icon(
+        icon,
+        size: 20,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+
+      const SizedBox(width: 12),
+
+      Expanded(
+        child: Text(title),
+      ),
+
+      Text(
+        value,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ],
+  );
 }

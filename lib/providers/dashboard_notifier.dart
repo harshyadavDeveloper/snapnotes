@@ -17,6 +17,9 @@ class DashboardNotifier extends BaseNotifier {
 
   final GetRecentNotesUseCase _getRecentNotesUseCase;
 
+  String get storageSummary =>
+      '$totalNotes Notes • $totalCollections Collections';
+
   int totalNotes = 0;
 
   int totalCollections = 0;
