@@ -67,6 +67,87 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  Widget _buildActivityCard(DashboardNotifier provider) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        color: Theme.of(context).colorScheme.surface,
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: .08),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Today\'s Activity',
+            style: Theme.of(
+              context,
+            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+          ),
+
+          const SizedBox(height: 20),
+
+          _buildActivityRow(
+            Icons.note_alt_outlined,
+            'Notes',
+            provider.totalNotes.toString(),
+          ),
+
+          const SizedBox(height: 16),
+
+          _buildActivityRow(
+            Icons.folder_outlined,
+            'Collections',
+            provider.totalCollections.toString(),
+          ),
+
+          const SizedBox(height: 16),
+
+          _buildActivityRow(
+            Icons.star_outline,
+            'Favorites',
+            provider.totalFavorites.toString(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActivityRow(IconData icon, String title, String value) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: .12),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(
+            icon,
+            size: 18,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+
+        const SizedBox(width: 12),
+
+        Expanded(
+          child: Text(title, style: Theme.of(context).textTheme.bodyLarge),
+        ),
+
+        Text(
+          value,
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final dashboardProvider = context.watch<DashboardNotifier>();
@@ -231,6 +312,63 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
 
                   const SizedBox(height: 24),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24),
+                      gradient: LinearGradient(
+                        colors: Theme.of(context).brightness == Brightness.dark
+                            ? [const Color(0xFF134E4A), const Color(0xFF0F172A)]
+                            : [
+                                const Color(0xFF14B8A6),
+                                const Color(0xFF0F766E),
+                              ],
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          '🔥 Productivity',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        Text(
+                          '${provider.totalNotes} Notes Created',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        Text(
+                          '${provider.totalCollections} Collections',
+                          style: const TextStyle(color: Colors.white70),
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        const Text(
+                          'Keep Building Your Knowledge Base 🚀',
+                          style: TextStyle(color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  _buildActivityCard(provider),
+
+                  const SizedBox(height: 24),
 
                   /// Quick Actions Header
                   const AppSectionHeader(title: 'Quick Actions'),
@@ -291,7 +429,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Row(
                     children: [
                       Text(
-                        'Recent Notes',
+                        'Recent Notes (${provider.recentNotes.length})',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
@@ -311,7 +449,31 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(height: 16),
 
                   if (dashboardProvider.recentNotes.isEmpty)
-                    const AppEmptyState()
+                    Column(
+                      children: [
+                        const SizedBox(height: 40),
+
+                        Icon(
+                          Icons.document_scanner_outlined,
+                          size: 80,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        Text(
+                          'Start Scanning',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+
+                        const SizedBox(height: 8),
+
+                        const Text(
+                          'Capture your first document and build your knowledge base.',
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    )
                   else
                     ListView.separated(
                       shrinkWrap: true,
