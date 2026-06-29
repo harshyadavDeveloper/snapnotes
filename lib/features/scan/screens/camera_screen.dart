@@ -106,8 +106,7 @@ class _CameraScreenState extends State<CameraScreen> {
                   final ocrNotifier = context.read<OcrNotifier>();
                   await Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (_) => const OcrLoadingScreen()),
+                    MaterialPageRoute(builder: (_) => const OcrLoadingScreen()),
                   );
                   await ocrNotifier.recognizeText(provider.capturedImage!);
                   await MyNavigator.pushReplacement(
@@ -133,9 +132,7 @@ class _CameraScreenState extends State<CameraScreen> {
       fit: StackFit.expand,
       children: [
         // Camera preview fills entire screen
-        Positioned.fill(
-          child: CameraPreview(provider.cameraController!),
-        ),
+        Positioned.fill(child: CameraPreview(provider.cameraController!)),
 
         // Scan overlay (returns SizedBox.shrink for photo mode — that's fine)
         const ScanOverlay(),
@@ -147,8 +144,7 @@ class _CameraScreenState extends State<CameraScreen> {
           right: 0,
           child: SafeArea(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -160,8 +156,10 @@ class _CameraScreenState extends State<CameraScreen> {
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.arrow_back,
-                              color: Colors.white),
+                          icon: const Icon(
+                            Icons.arrow_back,
+                            color: Colors.white,
+                          ),
                           onPressed: () => Navigator.pop(context),
                         ),
                       ),
@@ -170,7 +168,9 @@ class _CameraScreenState extends State<CameraScreen> {
                         child: Center(
                           child: Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.black45,
                               borderRadius: BorderRadius.circular(20),
@@ -246,9 +246,7 @@ class _CameraScreenState extends State<CameraScreen> {
                   },
                 ),
                 _buildActionButton(
-                  icon: provider.isFlashOn
-                      ? Icons.flash_on
-                      : Icons.flash_off,
+                  icon: provider.isFlashOn ? Icons.flash_on : Icons.flash_off,
                   label: provider.isFlashOn ? 'Flash On' : 'Flash Off',
                   onTap: () => provider.toggleFlash(),
                 ),
@@ -320,8 +318,7 @@ class _CaptureButtonState extends State<_CaptureButton> {
           height: 90,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border:
-                Border.all(color: const Color(0xFF14B8A6), width: 4),
+            border: Border.all(color: const Color(0xFF14B8A6), width: 4),
             boxShadow: const [
               BoxShadow(
                 color: Color(0x5514B8A6),

@@ -10,7 +10,6 @@ import 'package:snapnotes/providers/dashboard_notifier.dart';
 import 'package:snapnotes/providers/navigation_provider.dart';
 
 import '../../../widgets/app_action_card.dart';
-import '../../../widgets/app_empty_state.dart';
 import '../../../widgets/app_section_header.dart';
 import '../../../widgets/app_stat_card.dart';
 

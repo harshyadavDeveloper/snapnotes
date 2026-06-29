@@ -89,59 +89,59 @@ class SettingsScreen extends StatelessWidget {
           const SizedBox(height: 16),
 
           _SettingsCard(
-  child: Column(
-    children: [
-      const SizedBox(height: 16),
+            child: Column(
+              children: [
+                const SizedBox(height: 16),
 
-      Row(
-        children: [
-          Icon(
-            Icons.storage_outlined,
-            color: Theme.of(context).colorScheme.primary,
-          ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.storage_outlined,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
 
-          const SizedBox(width: 12),
+                    const SizedBox(width: 12),
 
-          Text(
-            'Storage Statistics',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
+                    Text(
+                      'Storage Statistics',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 20),
+
+                _buildStatRow(
+                  context,
+                  Icons.note_alt_outlined,
+                  'Notes',
+                  dashboard.totalNotes.toString(),
+                ),
+
+                const SizedBox(height: 12),
+
+                _buildStatRow(
+                  context,
+                  Icons.folder_outlined,
+                  'Collections',
+                  dashboard.totalCollections.toString(),
+                ),
+
+                const SizedBox(height: 12),
+
+                _buildStatRow(
+                  context,
+                  Icons.star_outline,
+                  'Favorites',
+                  dashboard.totalFavorites.toString(),
+                ),
+
+                const SizedBox(height: 16),
+              ],
             ),
           ),
-        ],
-      ),
-
-      const SizedBox(height: 20),
-
-      _buildStatRow(
-        context,
-        Icons.note_alt_outlined,
-        'Notes',
-        dashboard.totalNotes.toString(),
-      ),
-
-      const SizedBox(height: 12),
-
-      _buildStatRow(
-        context,
-        Icons.folder_outlined,
-        'Collections',
-        dashboard.totalCollections.toString(),
-      ),
-
-      const SizedBox(height: 12),
-
-      _buildStatRow(
-        context,
-        Icons.star_outline,
-        'Favorites',
-        dashboard.totalFavorites.toString(),
-      ),
-
-      const SizedBox(height: 16),
-    ],
-  ),
-),
 
           const SizedBox(height: 16),
 
@@ -173,7 +173,6 @@ class _SettingsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
@@ -196,23 +195,17 @@ Widget _buildStatRow(
 ) {
   return Row(
     children: [
-      Icon(
-        icon,
-        size: 20,
-        color: Theme.of(context).colorScheme.primary,
-      ),
+      Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
 
       const SizedBox(width: 12),
 
-      Expanded(
-        child: Text(title),
-      ),
+      Expanded(child: Text(title)),
 
       Text(
         value,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-          fontWeight: FontWeight.bold,
-        ),
+        style: Theme.of(
+          context,
+        ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
       ),
     ],
   );

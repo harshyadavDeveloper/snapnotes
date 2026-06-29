@@ -11,6 +11,7 @@ class DashboardNotifier extends BaseNotifier {
     this._getTotalCollectionsUseCase,
     this._getRecentNotesUseCase,
   );
+
   final GetTotalNotesUseCase _getTotalNotesUseCase;
 
   final GetTotalCollectionsUseCase _getTotalCollectionsUseCase;
